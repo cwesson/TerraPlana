@@ -1,0 +1,29 @@
+include terrain.map
+title Demo One
+desc Everything at once.
+start 1 1
+end 6 14
+item HealthPack 12 11 30
+item Flippers 5 3
+item Key 5 6
+item Balloon 3 7
+item Balloon 7 3
+creature Ant 9 10 north
+
+map
+################
+#+#~~~~~~~~#%%%#
+#+#~~~~~~~~#%%%#
+#+++++++++++%%%#
+###+####D###%%%#
+#//////#++.....#
+#//////+++.....#
+#//////#++.....#
+#//////#++######
+###+####++yyyyy#
+###+#####+yyyyy#
+#+++++++++yyyyy#
+#=====+===yyyyy#
+#=====+========#
+#=====+========#
+################

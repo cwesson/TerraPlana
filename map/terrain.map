@@ -1,0 +1,10 @@
+terrain Path +
+terrain Wall #
+terrain Door D
+terrain Water ~
+terrain Ice /
+terrain Lava %
+terrain Sand .
+terrain Grass y
+terrain Metal =
+terrain Stone &
