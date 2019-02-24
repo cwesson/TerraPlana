@@ -30,10 +30,10 @@ public class IceCube extends Movable{
 	public boolean onPushed(Player player, Direction dir, Tile next){
 		if(next.getTerrain().getClass().equals(Water.class)){
 			next.setTerrain(new Ice(next));
-			next.removeMovable(this);
+			next.removeMovable();
 		}else if(next.getTerrain().getClass().equals(Lava.class)){
 			next.setTerrain(new Stone(next));
-			next.removeMovable(this);
+			next.removeMovable();
 		}
 		return false;
 	}

@@ -6,6 +6,7 @@ public enum Direction{
 	EAST(90),
 	WEST(270);
 	
+	@SuppressWarnings("unused")
 	private final int dir;
 	
 	private Direction(int dir){

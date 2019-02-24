@@ -40,9 +40,20 @@ public class TerraPlana{
 			}
 		}
 		
+		Game game = null;
 		try{
 			File file = new File(map);
-			Game game = new Game(file);
+			game = new Game(file);
+		}catch(Exception e){
+			try{
+				File file = new File(code.getClass().getResource("/"+map).toURI());
+				game = new Game(file);
+			}catch(Exception ee){
+				ee.printStackTrace();
+			}
+		}
+		
+		try{
 			Player player = new Player("Player 1");
 			if(code.equals("")){
 				game.addPlayer(player);
@@ -50,7 +61,7 @@ public class TerraPlana{
 				game.addPlayer(player, code);
 			}
 			new Display(player);
-		}catch(Exception e){
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}

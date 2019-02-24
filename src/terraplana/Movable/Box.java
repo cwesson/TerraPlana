@@ -35,7 +35,7 @@ public class Box extends Movable{
 		// TODO Auto-generated method stub
 		if(next.getTerrain().getClass().equals(Water.class)){
 			next.setTerrain(new Path(next));
-			next.removeMovable(this);
+			next.removeMovable();
 		}
 		return false;
 	}

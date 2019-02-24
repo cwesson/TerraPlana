@@ -1,7 +1,6 @@
 package terraplana;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
@@ -53,7 +52,7 @@ public class Board{
 	
 	private void load() throws Exception{
 		if(local){
-			parseFile(new FileInputStream(file), file.getParent());
+			parseFile(getClass().getResourceAsStream("/"+file.getPath()), file.getParent());
 		}else{
 			String parent = url.toString().substring(0, url.toString().lastIndexOf('/'));
 			parseFile(url.openStream(), parent);
@@ -92,7 +91,7 @@ public class Board{
 			}else if(cmd[0].equals("include")){
 				String path = parent;
 				if(local){
-					parseFile(new FileInputStream(new File(path + "/" + cmd[1])), parent);
+					parseFile(getClass().getResourceAsStream("/"+path + "/" + cmd[1]), parent);
 				}else{
 					parseFile(new URL(parent + "/" + cmd[1]).openStream(), parent);
 				}
@@ -266,13 +265,13 @@ public class Board{
 		if(oldTile.getTerrain().onExit(player, dir, newTile)){
 			if(newTile.getTerrain().onEnter(player, dir)){
 				boolean pushed = true;
-				if(pushTile != null){
-					List<Movable> movables = newTile.getMovables();
-					for(Movable mv : movables){
+				if(newTile.hasMovable() && pushTile != null){
+					if(!pushTile.hasMovable()){
+						Movable mv = newTile.getMovable();
 						if(newTile.getTerrain().onExit(mv, dir, pushTile)){
 							if(pushTile.getTerrain().onEnter(mv, dir)){
 								if(mv.onPush((Player)player, dir, pushTile)){
-									newTile.removeMovable(mv);
+									newTile.removeMovable();
 									pushTile.addMovable(mv);
 									newTile.getTerrain().onExited(mv, dir, pushTile);
 									mv.onPushed((Player)player, dir, pushTile);
@@ -286,6 +285,8 @@ public class Board{
 						}else{
 							pushed = false;
 						}
+					}else{
+						pushed = false;
 					}
 				}
 				if(pushed){

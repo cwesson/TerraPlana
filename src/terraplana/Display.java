@@ -111,8 +111,9 @@ public class Display extends JPanel implements KeyListener{
 							}
 						}
 						
-						// Draw movables.
-						for(Movable mv : cell.getMovables()){
+						// Draw movable.
+						if(cell.hasMovable()){
+							Movable mv = cell.getMovable();
 							String type = mv.getClass().getName();
 							type = type.substring(type.lastIndexOf(".")+1);
 							int ix = j;

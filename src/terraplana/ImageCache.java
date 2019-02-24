@@ -1,7 +1,6 @@
 package terraplana;
 
 import java.awt.Image;
-import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class ImageCache{
 		}else{
 			try{
 				if(local){
-					img = ImageIO.read(new File(path+"/"+file));
+					img = ImageIO.read(getClass().getResourceAsStream("/"+file));
 				}else{
 					img = ImageIO.read(new URL(path+"/"+file));
 				}

@@ -2,7 +2,6 @@ package terraplana;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,7 +39,7 @@ public class Game{
 	
 	private void load() throws Exception{
 		if(local){
-			parseFile(new FileInputStream(file), file.getParent());
+			parseFile(getClass().getResourceAsStream("/"+file.getPath()), file.getParent());
 		}else{
 			String parent = url.toString().substring(0, url.toString().lastIndexOf('/'));
 			parseFile(url.openStream(), parent);

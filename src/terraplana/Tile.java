@@ -11,7 +11,7 @@ import terraplana.Terrain.Terrain;
 public class Tile{
 	private Terrain terrain = Terrain.VOID;
 	private List<Item> items = new ArrayList<Item>();
-	private List<Movable> movables = new ArrayList<Movable>();
+	private Movable movable = null;
 	private List<Actor> actors = new ArrayList<Actor>();
 	private Board board;
 	
@@ -53,19 +53,19 @@ public class Tile{
 	}
 	
 	public void addMovable(Movable mv){
-		movables.add(mv);
+		movable = mv;
 	}
 	
-	public void removeMovable(Movable mv){
-		movables.remove(mv);
+	public void removeMovable(){
+		movable = null;
 	}
 	
-	public List<Movable> getMovables(){
-		List<Movable> list = new ArrayList<Movable>();
-		for(Movable mv : movables){
-			list.add(mv);
-		}
-		return list;
+	public Movable getMovable(){
+		return movable;
+	}
+	
+	public boolean hasMovable(){
+		return movable != null;
 	}
 	
 	public Terrain getTerrain(){
