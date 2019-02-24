@@ -68,7 +68,7 @@ public class Display extends JPanel implements KeyListener{
 		BufferedImage fgscreen = new BufferedImage(DRAW_WIDTH, DRAW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics foreground = fgscreen.getGraphics();
 		
-		int status = player.getStatus();
+		Actor.Status status = player.getStatus();
 		
 		// Draw background image.
 		{
@@ -205,7 +205,7 @@ public class Display extends JPanel implements KeyListener{
 		}
 		
 		// Draw message box.
-		if(status != Player.STATUS_OK){
+		if(status != Player.Status.STATUS_OK){
 			uibuffer.setColor(Color.GRAY);
 			int boxTop = (int)(centerY-uiImgSize*4/3);
 			uibuffer.fill3DRect((int)(centerX-uiWidth/3), boxTop, uiWidth*2/3, uiImgSize*3, true);
@@ -223,13 +223,13 @@ public class Display extends JPanel implements KeyListener{
 				uibuffer.drawString(str, (int)centerX-strwidth/2, boxTop+strheight);
 			}
 			
-			if(status == Player.STATUS_DEAD){
+			if(status == Player.Status.STATUS_DEAD){
 				String msg = "You died.";
 				uibuffer.setFont(fontsm);
 				int strwidth = (int)uibuffer.getFontMetrics().stringWidth(msg);
 				int strheight = (int)uibuffer.getFontMetrics().getHeight();
 				uibuffer.drawString(msg, (int)centerX-strwidth/2, (int)centerY+strheight);
-			}else if(status == Player.STATUS_DONE){
+			}else if(status == Player.Status.STATUS_DONE){
 				String msg = "You Win!";
 				uibuffer.setFont(fontsm);
 				int strwidth = (int)uibuffer.getFontMetrics().stringWidth(msg);
@@ -248,7 +248,7 @@ public class Display extends JPanel implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent key){
 		Debug.out.println("keyPressed");
-		if(player.inputAllowed() && player.getStatus() == Actor.STATUS_OK){
+		if(player.inputAllowed() && player.getStatus() == Actor.Status.STATUS_OK){
 			int code = key.getKeyCode();
 			Direction dir = null;
 			switch(code){

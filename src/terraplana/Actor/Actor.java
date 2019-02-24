@@ -10,9 +10,11 @@ import terraplana.Tile;
 import terraplana.Item.Item;
 
 public abstract class Actor implements Attributes{
-	public static final int STATUS_OK = 0;
-	public static final int STATUS_DEAD = 1;
-	public static final int STATUS_DONE = 2;
+	public enum Status {
+		STATUS_OK,
+		STATUS_DEAD,
+		STATUS_DONE
+	};
 
 	protected List<String> attributes = new ArrayList<String>();
 	protected List<Item> inventory = new ArrayList<Item>();
@@ -20,7 +22,7 @@ public abstract class Actor implements Attributes{
 	protected Direction direction;
 	protected int health = 100;
 	protected boolean input = true;
-	protected int status = STATUS_OK;
+	protected Status status = Status.STATUS_OK;
 
 	public abstract void onConflict(Actor act);
 	
@@ -42,7 +44,7 @@ public abstract class Actor implements Attributes{
 	
 	public int setHealth(int amount){
 		int prev = health;
-		if(status != STATUS_DONE){
+		if(status != Status.STATUS_DONE){
 			health += amount;
 			if(health > 100){
 				health = 100;
@@ -51,10 +53,10 @@ public abstract class Actor implements Attributes{
 			}
 			Debug.out.println(this);
 			if(health <= 0){
-				status = STATUS_DEAD;
+				status = Status.STATUS_DEAD;
 				Debug.out.println("Status = " + status);
 			}else{
-				status = STATUS_OK;
+				status = Status.STATUS_OK;
 			}
 		}
 		return health - prev;
@@ -72,12 +74,12 @@ public abstract class Actor implements Attributes{
 		return input;
 	}
 	
-	public int getStatus(){
+	public Status getStatus(){
 		return status;
 	}
 	
 	public void done(){
-		status = STATUS_DONE;
+		status = Status.STATUS_DONE;
 	}
 	
 	public Direction getDirection(){

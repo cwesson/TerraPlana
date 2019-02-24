@@ -1,26 +1,26 @@
 package terraplana;
 
-public class Direction{
-	public static final Direction NORTH = new Direction(8);
-	public static final Direction SOUTH = new Direction(2);
-	public static final Direction EAST = new Direction(6);
-	public static final Direction WEST = new Direction(4);
+public enum Direction{
+	NORTH(0),
+	SOUTH(180),
+	EAST(90),
+	WEST(270);
 	
-	private int dir;
+	private final int dir;
 	
 	private Direction(int dir){
 		this.dir = dir;
 	}
 	
 	public String toString(){
-		switch(dir){
-			case 8:
+		switch(this){
+			case NORTH:
 				return "North";
-			case 2:
+			case SOUTH:
 				return "South";
-			case 6:
+			case EAST:
 				return "East";
-			case 4:
+			case WEST:
 				return "West";
 			default:
 				return "";
@@ -43,14 +43,14 @@ public class Direction{
 	}
 	
 	public Direction invert(){
-		switch(dir){
-			case 8:
+		switch(this){
+			case NORTH:
 				return SOUTH;
-			case 2:
+			case SOUTH:
 				return NORTH;
-			case 6:
+			case EAST:
 				return WEST;
-			case 4:
+			case WEST:
 				return EAST;
 			default:
 				return null;
