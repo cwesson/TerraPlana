@@ -59,6 +59,10 @@ public abstract class Creature extends Actor{
 	
 	abstract protected Direction tick(int time);
 	
+	protected boolean onStopped(){
+		return false;
+	}
+	
 	private class CreatureTimer extends TimerTask{
 		private Timer timer = new Timer();
 		private Creature crea;
@@ -72,8 +76,15 @@ public abstract class Creature extends Actor{
 
 		@Override
 		public void run(){
-			Direction dir = crea.tick(time);
-			crea.getTile().getBoard().moveActor(crea, dir);
+			boolean moved = false;
+			boolean again = true;
+			while(!moved && again) {
+				Direction dir = crea.tick(time);
+				moved = crea.getTile().getBoard().moveActor(crea, dir);
+				if(!moved){
+					again = crea.onStopped();
+				}
+			}
 		}
 	}
 }

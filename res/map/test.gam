@@ -1,8 +1,9 @@
 title Demo Game
 desc Short game to demo the engine.
 level skills.map
-level test1.map 1a1
-level test2.map two
-level test3.map aaabbbccc
-level test4.map 481632
+level test1.map peaceful
+level test2.map icicle
+level test3.map ifoundnemo
+level test4.map boilboil
+level test5.map spideysense
 

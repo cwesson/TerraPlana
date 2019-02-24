@@ -30,15 +30,19 @@ public class Tile{
 	}
 	
 	public void addActor(Actor act){
-		for(Actor other : actors){
-			other.onConflict(act);
-			act.onConflict(other);
+		synchronized(actors){
+			for(Actor other : actors){
+				other.onConflict(act);
+				act.onConflict(other);
+			}
+			actors.add(act);
 		}
-		actors.add(act);
 	}
 	
 	public void removeActor(Actor act){
-		actors.remove(act);
+		synchronized(actors){
+			actors.remove(act);
+		}
 	}
 	
 	public void addItem(Item it){

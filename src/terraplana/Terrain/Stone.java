@@ -36,6 +36,6 @@ public class Stone extends Terrain{
 	}
 	
 	public String toString(){
-		return "#";
+		return "&";
 	}
 }

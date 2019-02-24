@@ -259,7 +259,7 @@ public class Board{
 		return creatures;
 	}
 
-	public void moveActor(Actor player, Direction dir){
+	public boolean moveActor(Actor player, Direction dir){
 		Position pos = actors.get(player);
 		Position newPos = pos.clone();
 		newPos.move(dir);
@@ -321,9 +321,11 @@ public class Board{
 							this.next((Player)player);
 						}
 					}
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	public Position getPosition(Actor player){
