@@ -166,7 +166,8 @@ public class Display extends JPanel implements KeyListener{
 		
 		// Draw the player.
 		{
-			Image img = icache.request("img/Player.png");
+			Direction dir = player.getDirection();
+			Image img = icache.request("img/Player" + "-" + dir + ".png");
 			foreground.drawImage(img, offx, offy, this);
 		}
 

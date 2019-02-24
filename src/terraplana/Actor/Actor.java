@@ -24,7 +24,7 @@ public abstract class Actor implements Attributes{
 	protected List<String> attributes = new ArrayList<String>();
 	protected List<Item> inventory = new ArrayList<Item>();
 	protected Tile tile = null;
-	protected Direction direction;
+	protected Direction direction = Direction.EAST;
 	protected int health = 100;
 	protected boolean input = true;
 	protected Status status = Status.STATUS_OK;
