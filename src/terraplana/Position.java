@@ -1,3 +1,8 @@
+/**
+ * @file Position.java
+ * @author Conlan Wesson
+ */
+
 package terraplana;
 
 public class Position{

@@ -1,3 +1,8 @@
+/**
+ * @file Movable.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Movable;
 
 import terraplana.Direction;

@@ -1,3 +1,8 @@
+/**
+ * @file Creature.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Actor.Creature;
 
 import java.util.ArrayList;

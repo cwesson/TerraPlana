@@ -1,3 +1,8 @@
+/**
+ * @file TerraPlanaApplet.java
+ * @author Conlan Wesson
+ */
+
 package terraplana;
 
 import java.net.URL;

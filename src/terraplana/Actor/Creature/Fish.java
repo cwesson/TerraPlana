@@ -1,3 +1,8 @@
+/**
+ * @file Fish.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Actor.Creature;
 
 import terraplana.Debug;

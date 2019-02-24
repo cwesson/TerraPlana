@@ -1,3 +1,8 @@
+/**
+ * @file Player.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Actor;
 
 public class Player extends Actor{

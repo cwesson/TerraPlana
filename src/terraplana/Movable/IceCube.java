@@ -1,3 +1,8 @@
+/**
+ * @file IceCube.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Movable;
 
 import terraplana.Direction;

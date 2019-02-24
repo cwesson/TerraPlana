@@ -1,3 +1,8 @@
+/**
+ * @file Display.java
+ * @author Conlan Wesson
+ */
+
 package terraplana;
 
 import java.awt.Color;

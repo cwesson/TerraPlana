@@ -1,3 +1,8 @@
+/**
+ * @file Actor.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Actor;
 
 import java.util.ArrayList;

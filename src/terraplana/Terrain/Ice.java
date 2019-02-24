@@ -1,3 +1,8 @@
+/**
+ * @file Ice.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Terrain;
 
 import java.util.Timer;

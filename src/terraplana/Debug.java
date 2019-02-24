@@ -1,5 +1,9 @@
-package terraplana;
+/**
+ * @file Debug.java
+ * @author Conlan Wesson
+ */
 
+package terraplana;
 
 import java.io.IOException;
 import java.io.OutputStream;

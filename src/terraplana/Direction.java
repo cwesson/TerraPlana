@@ -1,3 +1,8 @@
+/**
+ * @file Direction.java
+ * @author Conlan Wesson
+ */
+
 package terraplana;
 
 public enum Direction{

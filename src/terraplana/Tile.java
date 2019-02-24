@@ -1,3 +1,8 @@
+/**
+ * @file Tile.java
+ * @author Conlan Wesson
+ */
+
 package terraplana;
 
 import java.util.ArrayList;

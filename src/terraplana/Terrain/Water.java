@@ -1,3 +1,8 @@
+/**
+ * @file Water.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Terrain;
 
 import java.util.HashMap;

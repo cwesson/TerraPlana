@@ -1,3 +1,8 @@
+/**
+ * @file Flippers.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Item;
 
 import terraplana.Actor.Player;

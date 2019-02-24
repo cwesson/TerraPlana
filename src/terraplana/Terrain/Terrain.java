@@ -1,3 +1,8 @@
+/**
+ * @file Terrain.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Terrain;
 
 import java.util.ArrayList;

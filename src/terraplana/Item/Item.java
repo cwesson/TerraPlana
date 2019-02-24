@@ -1,3 +1,8 @@
+/**
+ * @file Item.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Item;
 
 import java.util.ArrayList;

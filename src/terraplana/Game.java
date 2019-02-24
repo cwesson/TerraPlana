@@ -1,3 +1,8 @@
+/**
+ * @file Game.java
+ * @author Conlan Wesson
+ */
+
 package terraplana;
 
 import java.io.BufferedReader;

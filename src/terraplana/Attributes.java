@@ -1,3 +1,8 @@
+/**
+ * @file Attributes.java
+ * @author Conlan Wesson
+ */
+
 package terraplana;
 
 public interface Attributes{

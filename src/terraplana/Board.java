@@ -1,4 +1,10 @@
+/**
+ * @file Board.java
+ * @author Conlan Wesson
+ */
+
 package terraplana;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;

@@ -1,3 +1,8 @@
+/**
+ * @file Ant.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Actor.Creature;
 
 import terraplana.Direction;

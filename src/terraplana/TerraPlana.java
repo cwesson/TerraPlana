@@ -1,10 +1,9 @@
 /**
- * @file TerraPlanus.java
- * @author Conlan
- *
+ * @file TerraPlana.java
+ * @author Conlan Wesson
  */
-package terraplana;
 
+package terraplana;
 
 import java.io.File;
 

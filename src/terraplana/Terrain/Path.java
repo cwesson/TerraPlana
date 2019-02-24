@@ -1,3 +1,8 @@
+/**
+ * @file Path.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Terrain;
 
 import terraplana.Direction;
