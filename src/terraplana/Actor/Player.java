@@ -5,11 +5,15 @@
 
 package terraplana.Actor;
 
+import terraplana.Direction;
+import terraplana.Display;
+
 public class Player extends Actor{
 	private static int sequence = 0;
 
 	private int id;
 	private String name;
+	private Display display;
 	
 	public Player(String name){
 		attributes.add("movement.walk");
@@ -18,6 +22,7 @@ public class Player extends Actor{
 		id = sequence;
 		sequence++;
 		this.name = name;
+		setInterval(200);
 	}
 
 	public String getName(){
@@ -26,6 +31,10 @@ public class Player extends Actor{
 	
 	public String toString(){
 		return "Player" + id + ": " + name + " (" + health + "%)";
+	}
+	
+	public void setDisplay(Display dis){
+		display = dis;
 	}
 	
 	@Override
@@ -44,5 +53,14 @@ public class Player extends Actor{
 	public void onConflict(Actor act){
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	protected Direction tick(int time){
+		if(display != null){
+			return display.nextMove();
+		}else{
+			return Direction.NONE;
+		}
 	}
 }

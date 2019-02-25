@@ -35,6 +35,8 @@ public class Display extends JPanel implements KeyListener{
 	private static final int DRAW_WIDTH = 640;
 	private JFrame win;
 	protected Player player;
+	protected Direction direction = Direction.NONE;
+	protected int code = KeyEvent.VK_UNDEFINED;
 	private ImageCache icache = ImageCache.getInstance();
 	
 	public Display(Player player) throws Exception{
@@ -50,6 +52,7 @@ public class Display extends JPanel implements KeyListener{
 	
 	protected Display(Player player, JApplet applet){
 		this.player = player;
+		player.setDisplay(this);
 		this.setPreferredSize(new Dimension(DRAW_WIDTH, DRAW_HEIGHT));
 		if(applet != null){
 			applet.add(this);
@@ -261,29 +264,31 @@ public class Display extends JPanel implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent key){
 		Debug.out.println("keyPressed");
-		if(player.inputAllowed() && player.getStatus() == Actor.Status.STATUS_OK){
-			int code = key.getKeyCode();
-			Direction dir = null;
-			switch(code){
-				case KeyEvent.VK_UP:
-				case KeyEvent.VK_W:
-					dir = Direction.NORTH;
-					break;
-				case KeyEvent.VK_DOWN:
-				case KeyEvent.VK_S:
-					dir = Direction.SOUTH;
-					break;
-				case KeyEvent.VK_LEFT:
-				case KeyEvent.VK_A:
-					dir = Direction.WEST;
-					break;
-				case KeyEvent.VK_RIGHT:
-				case KeyEvent.VK_D:
-					dir = Direction.EAST;
-					break;
-			}
-			player.getTile().getBoard().moveActor(player, dir);
+		code = key.getKeyCode();
+	}
+	
+	public Direction nextMove(){
+		Direction dir = Direction.NONE;
+		switch(code){
+			case KeyEvent.VK_UP:
+			case KeyEvent.VK_W:
+				dir = Direction.NORTH;
+				break;
+			case KeyEvent.VK_DOWN:
+			case KeyEvent.VK_S:
+				dir = Direction.SOUTH;
+				break;
+			case KeyEvent.VK_LEFT:
+			case KeyEvent.VK_A:
+				dir = Direction.WEST;
+				break;
+			case KeyEvent.VK_RIGHT:
+			case KeyEvent.VK_D:
+				dir = Direction.EAST;
+				break;
 		}
+		code = KeyEvent.VK_UNDEFINED;
+		return dir;
 	}
 
 	@Override

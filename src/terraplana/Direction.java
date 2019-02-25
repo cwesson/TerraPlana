@@ -6,6 +6,7 @@
 package terraplana;
 
 public enum Direction{
+	NONE(-1),
 	NORTH(0),
 	EAST(90),
 	SOUTH(180),

@@ -7,6 +7,8 @@ package terraplana.Actor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import terraplana.Attributes;
 import terraplana.Debug;
@@ -29,8 +31,19 @@ public abstract class Actor implements Attributes{
 	protected int lives = 1;
 	protected boolean input = true;
 	protected Status status = Status.STATUS_OK;
+	private ActorTimer timer;
 
 	public abstract void onConflict(Actor act);
+	
+	protected void setInterval(int time){
+		if(timer != null){
+			timer.cancel();
+			timer = null;
+		}
+		if(time > 0){
+			timer = new ActorTimer(this, time);
+		}
+	}
 	
 	public void setTile(Tile place){
 		if(tile != null){
@@ -139,5 +152,49 @@ public abstract class Actor implements Attributes{
 			}
 		}
 		return false;
+	}
+	
+	public void finalize(){
+		if(timer != null){
+			timer.cancel();
+			timer = null;
+		}
+	}
+	
+	abstract protected Direction tick(int time);
+	
+	protected boolean onStopped(){
+		return false;
+	}
+	
+	private class ActorTimer extends TimerTask{
+		private Timer timer = new Timer();
+		private Actor act;
+		private int time;
+		
+		public ActorTimer(Actor actor, int interval){
+			act = actor;
+			time = interval;
+			timer.scheduleAtFixedRate(this, interval, interval);
+		}
+
+		@Override
+		public void run(){
+			if(act.inputAllowed() && act.getStatus() == Actor.Status.STATUS_OK){
+				boolean moved = false;
+				boolean again = true;
+				while(!moved && again) {
+					Direction dir = act.tick(time);
+					if(dir != Direction.NONE){
+						moved = act.getTile().getBoard().moveActor(act, dir);
+						if(!moved){
+							again = act.onStopped();
+						}
+					}else{
+						again = false;
+					}
+				}
+			}
+		}
 	}
 }
