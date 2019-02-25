@@ -5,8 +5,6 @@
 
 package terraplana;
 
-import java.io.File;
-
 import terraplana.Actor.Player;
 
 public class TerraPlana{
@@ -38,21 +36,9 @@ public class TerraPlana{
 				map = args[i];
 			}
 		}
-		
-		Game game = null;
+
 		try{
-			File file = new File(map);
-			game = new Game(file);
-		}catch(Exception e){
-			try{
-				File file = new File(code.getClass().getResource("/"+map).toURI());
-				game = new Game(file);
-			}catch(Exception ee){
-				ee.printStackTrace();
-			}
-		}
-		
-		try{
+			Game game = new Game(map);
 			Player player = new Player("Player 1");
 			if(code.equals("")){
 				game.addPlayer(player);
@@ -61,8 +47,7 @@ public class TerraPlana{
 			}
 			new Display(player);
 		}catch(Exception e) {
-			e.printStackTrace();
+			Debug.err.println("Could not open game file.");
 		}
 	}
-
 }

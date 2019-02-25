@@ -35,12 +35,12 @@ public class Board{
 	private Position end;
 	private boolean local = true;
 	private URL url = null;
-	private File file = null;
+	private String file = null;
 	private List<String> cmdQueue = new ArrayList<String>();
 	
-	public Board(File file, Game game, int num) throws Exception{
+	public Board(String path, Game game, int num) throws Exception{
 		local = true;
-		this.file = file;
+		this.file = path;
 		this.url = null;
 		this.game = game;
 		level = num;
@@ -58,9 +58,9 @@ public class Board{
 	
 	private void load() throws Exception{
 		if(local){
-			parseFile(getClass().getResourceAsStream("/"+file.getPath()), file.getParent());
+			parseFile(getClass().getResourceAsStream(File.separator+file), file.substring(0, file.lastIndexOf(File.separator)));
 		}else{
-			String parent = url.toString().substring(0, url.toString().lastIndexOf('/'));
+			String parent = url.toString().substring(0, url.toString().lastIndexOf(File.separator));
 			parseFile(url.openStream(), parent);
 		}
 		for(String line : cmdQueue){
@@ -97,9 +97,9 @@ public class Board{
 			}else if(cmd[0].equals("include")){
 				String path = parent;
 				if(local){
-					parseFile(getClass().getResourceAsStream("/"+path + "/" + cmd[1]), parent);
+					parseFile(getClass().getResourceAsStream(File.separator+path + File.separator + cmd[1]), parent);
 				}else{
-					parseFile(new URL(parent + "/" + cmd[1]).openStream(), parent);
+					parseFile(new URL(parent + File.separator + cmd[1]).openStream(), parent);
 				}
 			}
 		}

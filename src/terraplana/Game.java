@@ -24,13 +24,13 @@ public class Game{
 	private Map<String, Integer> codes = new HashMap<String, Integer>();
 	private String title = "";
 	private String desc = "";
-	private File file = null;
+	private String path = null;
 	private URL url = null;
 	private boolean local = true;
 	
-	public Game(File file) throws Exception{
+	public Game(String file) throws Exception{
 		local = true;
-		this.file = file;
+		this.path = file;
 		this.url = null;
 		load();
 	}
@@ -38,15 +38,15 @@ public class Game{
 	public Game(URL url) throws Exception{
 		local = false;
 		this.url = url;
-		this.file = null;
+		this.path = null;
 		load();
 	}
 	
 	private void load() throws Exception{
 		if(local){
-			parseFile(getClass().getResourceAsStream("/"+file.getPath()), file.getParent());
+			parseFile(getClass().getResourceAsStream(File.separator+path), path.substring(0, path.lastIndexOf(File.separator)));
 		}else{
-			String parent = url.toString().substring(0, url.toString().lastIndexOf('/'));
+			String parent = url.toString().substring(0, url.toString().lastIndexOf(File.separator));
 			parseFile(url.openStream(), parent);
 		}
 	}
@@ -62,7 +62,7 @@ public class Game{
 			}else if(cmd[0].equals("desc")){
 				desc = line.substring(4);
 			}else if(cmd[0].equals("level")){
-				files.add(parent + "/" + cmd[1]);
+				files.add(parent + File.separator + cmd[1]);
 				if(cmd.length > 2){
 					codes.put(cmd[2], level);
 				}
@@ -90,7 +90,7 @@ public class Game{
 			if(files.size() > num){
 				Board board;
 				if(local){
-					board = new Board(new File(files.get(num)), this, num);
+					board = new Board(files.get(num), this, num);
 				}else{
 					board = new Board(new URL(files.get(num)), this, num);
 				}
