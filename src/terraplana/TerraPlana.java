@@ -48,6 +48,7 @@ public class TerraPlana{
 			new Display(player);
 		}catch(Exception e) {
 			Debug.err.println("Could not open game file.");
+			e.printStackTrace();
 		}
 	}
 }

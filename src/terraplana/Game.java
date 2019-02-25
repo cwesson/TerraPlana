@@ -6,7 +6,6 @@
 package terraplana;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,9 +43,9 @@ public class Game{
 	
 	private void load() throws Exception{
 		if(local){
-			parseFile(getClass().getResourceAsStream(File.separator+path), path.substring(0, path.lastIndexOf(File.separator)));
+			parseFile(getClass().getResourceAsStream("/"+path), path.substring(0, path.lastIndexOf('/')));
 		}else{
-			String parent = url.toString().substring(0, url.toString().lastIndexOf(File.separator));
+			String parent = url.toString().substring(0, url.toString().lastIndexOf('/'));
 			parseFile(url.openStream(), parent);
 		}
 	}
@@ -62,7 +61,7 @@ public class Game{
 			}else if(cmd[0].equals("desc")){
 				desc = line.substring(4);
 			}else if(cmd[0].equals("level")){
-				files.add(parent + File.separator + cmd[1]);
+				files.add(parent + "/" + cmd[1]);
 				if(cmd.length > 2){
 					codes.put(cmd[2], level);
 				}

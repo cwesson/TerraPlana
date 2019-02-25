@@ -6,7 +6,6 @@
 package terraplana;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
@@ -58,9 +57,9 @@ public class Board{
 	
 	private void load() throws Exception{
 		if(local){
-			parseFile(getClass().getResourceAsStream(File.separator+file), file.substring(0, file.lastIndexOf(File.separator)));
+			parseFile(getClass().getResourceAsStream("/"+file), file.substring(0, file.lastIndexOf('/')));
 		}else{
-			String parent = url.toString().substring(0, url.toString().lastIndexOf(File.separator));
+			String parent = url.toString().substring(0, url.toString().lastIndexOf('/'));
 			parseFile(url.openStream(), parent);
 		}
 		for(String line : cmdQueue){
@@ -97,9 +96,9 @@ public class Board{
 			}else if(cmd[0].equals("include")){
 				String path = parent;
 				if(local){
-					parseFile(getClass().getResourceAsStream(File.separator+path + File.separator + cmd[1]), parent);
+					parseFile(getClass().getResourceAsStream("/"+path + "/" + cmd[1]), parent);
 				}else{
-					parseFile(new URL(parent + File.separator + cmd[1]).openStream(), parent);
+					parseFile(new URL(parent + "/" + cmd[1]).openStream(), parent);
 				}
 			}
 		}
