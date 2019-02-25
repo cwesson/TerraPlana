@@ -28,7 +28,14 @@ public class IceCube extends Movable{
 
 	@Override
 	public boolean onPush(Player player, Direction dir, Tile next){
-		return true;
+		Class<?> terrain = next.getTerrain().getClass();
+		if(terrain.equals(player.getTile().getTerrain().getClass())){
+			return true;
+		}else if(terrain.equals(Water.class) || terrain.equals(Lava.class) || terrain.equals(Stone.class)){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override

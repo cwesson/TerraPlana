@@ -8,13 +8,13 @@ package terraplana.Actor.Creature;
 import terraplana.Direction;
 import terraplana.Position;
 import terraplana.Actor.Actor;
-import terraplana.Actor.Player;
 
 public class Spider extends Creature{
 	
 	public Spider(String[] args){
 		super(args);
 		attributes.add("movement.walk");
+		attributes.add("movement.climb");
 		attributes.add("movement.climb.safe");
 		setInterval(200);
 	}
@@ -33,9 +33,9 @@ public class Spider extends Creature{
 	}
 
 	@Override
-	public void onConflict(Actor act){
-		if(act.getClass() == Player.class){
-			act.setHealth(-25);
+	public void onConflict(Actor actor){
+		if(actor.isPlayer()){
+			actor.setHealth(-25);
 		}
 	}
 	

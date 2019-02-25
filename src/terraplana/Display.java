@@ -185,11 +185,17 @@ public class Display extends JPanel implements KeyListener{
 		// Draw the health bar.
 		{
 			int health = player.getHealth();
-			uibuffer.setColor(Color.RED);
-			uibuffer.fill3DRect(uiCenterLeft, 0, uiWidth, (int)(20*uiscale), false);
 			uibuffer.setColor(Color.GREEN);
-			int width = (int)((((double)health)/100.0)*DRAW_WIDTH);
-			uibuffer.fill3DRect((int)(uiCenterLeft+(DRAW_WIDTH - width )*uiscale), 0, (int)(width*uiscale), (int)(20*uiscale), true);
+			uibuffer.fill3DRect(uiCenterLeft, 0, uiWidth, (int)(uiImgSize*uiscale), false);
+			uibuffer.setColor(Color.RED);
+			int width = (int)(((100.0-(double)health)/100.0)*DRAW_WIDTH);
+			uibuffer.fill3DRect((int)(uiCenterLeft+(DRAW_WIDTH - width )*uiscale), 0, (int)(width*uiscale), (int)(uiImgSize*uiscale), true);
+			
+			int lives = player.getLives();
+			Image img = icache.request("img/Item/Life.png");
+			for(int i = 0; i < lives; i++){
+				uibuffer.drawImage(img, (i*uiImgSize), 0, uiImgSize, uiImgSize, this);
+			}
 		}
 		
 		// Draw inventory.

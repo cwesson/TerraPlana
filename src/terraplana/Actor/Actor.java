@@ -26,6 +26,7 @@ public abstract class Actor implements Attributes{
 	protected Tile tile = null;
 	protected Direction direction = Direction.EAST;
 	protected int health = 100;
+	protected int lives = 1;
 	protected boolean input = true;
 	protected Status status = Status.STATUS_OK;
 
@@ -53,11 +54,12 @@ public abstract class Actor implements Attributes{
 			health += amount;
 			if(health > 100){
 				health = 100;
-			}else if(health < 0){
+			}else if(health <= 0){
 				health = 0;
+				lives--;
 			}
 			Debug.out.println(this);
-			if(health <= 0){
+			if(lives <= 0){
 				status = Status.STATUS_DEAD;
 				Debug.out.println("Status = " + status);
 			}else{
@@ -65,6 +67,10 @@ public abstract class Actor implements Attributes{
 			}
 		}
 		return health - prev;
+	}
+	
+	public int getLives(){
+		return lives;
 	}
 
 	public void allowInput(){
@@ -81,6 +87,10 @@ public abstract class Actor implements Attributes{
 	
 	public Status getStatus(){
 		return status;
+	}
+	
+	public boolean isPlayer(){
+		return false;
 	}
 	
 	public void done(){

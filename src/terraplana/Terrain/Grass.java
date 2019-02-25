@@ -16,23 +16,25 @@ public class Grass extends Terrain{
 	}
 
 	@Override
-	public boolean onEnter(Actor player, Direction dir){
-		return true;
+	public boolean onEnter(Actor actor, Direction dir){
+		return actor.hasAttribute("movement.walk");
 	}
 
 	@Override
-	public boolean onEntered(Actor player, Direction dir, Tile last){
-		tile.setTerrain(new Path(tile));
+	public boolean onEntered(Actor actor, Direction dir, Tile last){
+		if(actor.isPlayer()){
+			tile.setTerrain(new Path(tile));
+		}
 		return false;
 	}
 
 	@Override
-	public boolean onExit(Actor player, Direction dir, Tile next){
+	public boolean onExit(Actor actor, Direction dir, Tile next){
 		return true;
 	}
 
 	@Override
-	public boolean onExited(Actor player, Direction dir, Tile next){
+	public boolean onExited(Actor actor, Direction dir, Tile next){
 		return false;
 	}
 	

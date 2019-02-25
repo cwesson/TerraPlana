@@ -12,6 +12,7 @@ public class Flippers extends Item{
 	
 	public Flippers(String[] args){
 		super(args);
+		attributes.add("movement.swim");
 		attributes.add("movement.swim.safe");
 	}
 

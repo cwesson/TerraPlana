@@ -19,10 +19,10 @@ public class Door extends Terrain{
 		super(place);
 	}
 
-	public boolean onEnter(Actor player, Direction dir){
+	public boolean onEnter(Actor actor, Direction dir){
 		boolean ok = false;
-		if(player.getClass().equals(Player.class)){
-			for(Item it : ((Player)player).getInventory()){
+		if(actor.isPlayer()){
+			for(Item it : ((Player)actor).getInventory()){
 				if(it.getClass().equals(Key.class)){
 					ok = true;
 					enter = dir;
@@ -33,20 +33,20 @@ public class Door extends Terrain{
 		return ok;
 	}
 
-	public boolean onEntered(Actor player, Direction dir, Tile last){
+	public boolean onEntered(Actor actor, Direction dir, Tile last){
 		return false;
 	}
 
-	public boolean onExit(Actor player, Direction dir, Tile next){
+	public boolean onExit(Actor actor, Direction dir, Tile next){
 		return true;
 	}
 
-	public boolean onExited(Actor player, Direction dir, Tile next){
-		if(enter != null && player.getClass().equals(Player.class)){
+	public boolean onExited(Actor actor, Direction dir, Tile next){
+		if(enter != null && actor.isPlayer()){
 			if(!enter.invert().equals(dir)){
-				for(Item it : ((Player)player).getInventory()){
+				for(Item it : ((Player)actor).getInventory()){
 					if(it.getClass().equals(Key.class)){
-						((Player)player).getInventory().remove(it);
+						((Player)actor).getInventory().remove(it);
 						tile.setTerrain(new Path(tile));
 						break;
 					}

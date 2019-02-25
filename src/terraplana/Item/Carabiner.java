@@ -12,6 +12,7 @@ public class Carabiner extends Item{
 	
 	public Carabiner(String[] args){
 		super(args);
+		attributes.add("movement.climb");
 		attributes.add("movement.climb.safe");
 	}
 

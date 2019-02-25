@@ -8,7 +8,6 @@ package terraplana.Actor.Creature;
 import terraplana.Direction;
 import terraplana.Position;
 import terraplana.Actor.Actor;
-import terraplana.Terrain.Terrain;
 
 public class Ant extends Creature{
 	
@@ -28,13 +27,13 @@ public class Ant extends Creature{
 		Position pos = getTile().getBoard().getPosition(this);
 		Position newPos = pos.clone();
 		newPos.move(direction);
-		Terrain next = getTile().getBoard().at(newPos).getTerrain();
-		Terrain curr = getTile().getBoard().at(pos).getTerrain();
-		if(curr.getClass().equals(next.getClass())){
-			return direction;
-		}else{
-			return direction.invert();
-		}
+		return direction;
+	}
+	
+	@Override
+	protected boolean onStopped(){
+		direction = direction.invert();
+		return true;
 	}
 
 	@Override

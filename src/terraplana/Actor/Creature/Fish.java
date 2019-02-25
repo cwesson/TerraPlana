@@ -9,7 +9,6 @@ import terraplana.Debug;
 import terraplana.Direction;
 import terraplana.Position;
 import terraplana.Actor.Actor;
-import terraplana.Terrain.Terrain;
 
 public class Fish extends Creature{
 	private int count = 0;
@@ -56,9 +55,8 @@ public class Fish extends Creature{
 	protected Direction tick(int time){
 		Position newPos = getTile().getBoard().getPosition(this);
 		newPos.move(direction);
-		Terrain next = getTile().getBoard().at(newPos).getTerrain();
 		Debug.out.println("conflict="+conflict+"    count="+count);
-		if(next.hasAttribute("element.water") && (count <= 4 || conflict > 0)){
+		if(count <= 4 || conflict > 0){
 			count++;
 			if(conflict > 0){
 				conflict--;
@@ -71,6 +69,14 @@ public class Fish extends Creature{
 			conflict = 0;
 		}
 		return direction;
+	}
+	
+	@Override
+	protected boolean onStopped(){
+		turn();
+		count = 0;
+		conflict = 0;
+		return false;
 	}
 
 	@Override

@@ -22,32 +22,32 @@ public class Ice extends Terrain{
 	}
 
 	@Override
-	public boolean onEnter(Actor player, Direction dir){
-		return true;
+	public boolean onEnter(Actor actor, Direction dir){
+		return actor.hasAttribute("movement.skate");
 	}
 
 	@Override
-	public boolean onEntered(Actor player, Direction dir, Tile last){
-		if(player.getClass().equals(Player.class)){
-			if(!((Player)player).hasItem(IceSkates.class)){
-				player.blockInput();
-				new IceTimer(player, dir);
+	public boolean onEntered(Actor actor, Direction dir, Tile last){
+		if(actor.isPlayer()){
+			if(!actor.hasAttribute("movement.skate.safe")){
+				actor.blockInput();
+				new IceTimer(actor, dir);
 			}else{
-				player.allowInput();
+				actor.allowInput();
 			}
 		}
 		return true;
 	}
 
 	@Override
-	public boolean onExit(Actor player, Direction dir, Tile next){
-		if(player.getClass().equals(Player.class)){
-			if(!((Player)player).hasItem(IceSkates.class)){
-				Position pos = player.getTile().getBoard().getPosition(player);
+	public boolean onExit(Actor actor, Direction dir, Tile next){
+		if(actor.isPlayer()){
+			if(!((Player)actor).hasItem(IceSkates.class)){
+				Position pos = actor.getTile().getBoard().getPosition(actor);
 				pos.move(dir);
 				Terrain terr = next.getTerrain();
 				if(terr.getClass() != this.getClass()){
-					player.allowInput();
+					actor.allowInput();
 				}
 			}
 		}
@@ -55,7 +55,7 @@ public class Ice extends Terrain{
 	}
 
 	@Override
-	public boolean onExited(Actor player, Direction dir, Tile next){
+	public boolean onExited(Actor actor, Direction dir, Tile next){
 		return true;
 	}
 	
@@ -65,18 +65,18 @@ public class Ice extends Terrain{
 	
 	private class IceTimer extends TimerTask{
 		private Timer timer = new Timer();
-		private Actor player;
+		private Actor actor;
 		private Direction dir;
 		
-		public IceTimer(Actor player, Direction dir){
-			this.player = player;
+		public IceTimer(Actor actor, Direction dir){
+			this.actor = actor;
 			this.dir = dir;
 			timer.schedule(this, 100);
 		}
 
 		@Override
 		public void run(){
-			player.getTile().getBoard().moveActor(player, dir);
+			actor.getTile().getBoard().moveActor(actor, dir);
 		}
 	}
 }

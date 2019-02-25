@@ -259,8 +259,8 @@ public class Board{
 		return creatures;
 	}
 
-	public boolean moveActor(Actor player, Direction dir){
-		Position pos = actors.get(player);
+	public boolean moveActor(Actor actor, Direction dir){
+		Position pos = actors.get(actor);
 		Position newPos = pos.clone();
 		newPos.move(dir);
 		Position pushPos = newPos.clone();
@@ -268,19 +268,19 @@ public class Board{
 		Tile oldTile = this.at(pos);
 		Tile newTile = this.at(newPos);
 		Tile pushTile = this.at(pushPos);
-		if(oldTile.getTerrain().onExit(player, dir, newTile)){
-			if(newTile.getTerrain().onEnter(player, dir)){
+		if(oldTile.getTerrain().onExit(actor, dir, newTile)){
+			if(newTile.getTerrain().onEnter(actor, dir)){
 				boolean pushed = true;
-				if(newTile.hasMovable() && pushTile != null){
+				if(actor.isPlayer() && newTile.hasMovable() && pushTile != null){
 					if(!pushTile.hasMovable()){
 						Movable mv = newTile.getMovable();
 						if(newTile.getTerrain().onExit(mv, dir, pushTile)){
 							if(pushTile.getTerrain().onEnter(mv, dir)){
-								if(mv.onPush((Player)player, dir, pushTile)){
+								if(mv.onPush((Player)actor, dir, pushTile)){
 									newTile.removeMovable();
 									pushTile.addMovable(mv);
 									newTile.getTerrain().onExited(mv, dir, pushTile);
-									mv.onPushed((Player)player, dir, pushTile);
+									mv.onPushed((Player)actor, dir, pushTile);
 									pushTile.getTerrain().onEntered(mv, dir, newTile);
 								}else{
 									pushed = false;
@@ -296,29 +296,29 @@ public class Board{
 					}
 				}
 				if(pushed){
-					actors.put(player, newPos);
-					player.setTile(newTile);
-					player.setDirection(dir);
-					oldTile.getTerrain().onExited(player, dir, newTile);
-					if(player.getClass().equals(Player.class)){
+					actors.put(actor, newPos);
+					actor.setTile(newTile);
+					actor.setDirection(dir);
+					oldTile.getTerrain().onExited(actor, dir, newTile);
+					if(actor.isPlayer()){
 						List<Item> items = newTile.getItems();
 						for(Item it : items){
-							if(it.onPickup((Player)player)){
-								player.addItem(it);
+							if(it.onPickup((Player)actor)){
+								actor.addItem(it);
 								it.setPosition(null);
 							}
-							if(it.onPickedup((Player)player)){
+							if(it.onPickedup((Player)actor)){
 								newTile.removeItem(it);
 							}
 						}
 					}
-					newTile.getTerrain().onEntered(player, dir, oldTile);
-					if(player.getClass().equals(Player.class)){
+					newTile.getTerrain().onEntered(actor, dir, oldTile);
+					if(actor.isPlayer()){
 						if(newPos.equals(this.getEnd())){
-							newTile.getTerrain().onExit(player, dir, null);
-							newTile.getTerrain().onExited(player, dir, null);
+							newTile.getTerrain().onExit(actor, dir, null);
+							newTile.getTerrain().onExited(actor, dir, null);
 							Debug.out.println("End of level.");
-							this.next((Player)player);
+							this.next((Player)actor);
 						}
 					}
 					return true;

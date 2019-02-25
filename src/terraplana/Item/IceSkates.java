@@ -12,6 +12,8 @@ public class IceSkates extends Item{
 	
 	public IceSkates(String[] args){
 		super(args);
+		attributes.add("movement.skate");
+		attributes.add("movement.skate.safe");
 	}
 
 	@Override

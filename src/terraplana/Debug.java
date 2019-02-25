@@ -11,6 +11,7 @@ import java.io.PrintStream;
 
 public class Debug{
 	public static PrintStream out = new PrintStream(new NullOutput());
+	public static PrintStream err = System.err;
 
 	public static void enable(){
 		out = System.out;

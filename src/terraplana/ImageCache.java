@@ -53,7 +53,7 @@ public class ImageCache{
 				}
 				cache.put(file, img);
 			}catch(Exception e){
-				System.err.print("Cannot open image " + file);
+				Debug.err.println("Cannot open image " + file);
 			}
 		}
 		return img;
