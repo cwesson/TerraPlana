@@ -197,7 +197,7 @@ public class Display extends JPanel implements KeyListener{
 			int lives = player.getLives();
 			Image img = icache.request("img/Item/Life.png");
 			for(int i = 0; i < lives; i++){
-				uibuffer.drawImage(img, (i*uiImgSize), 0, uiImgSize, uiImgSize, this);
+				uibuffer.drawImage(img, uiCenterLeft+(i*uiImgSize), 0, (int)(uiImgSize*uiscale), (int)(uiImgSize*uiscale), this);
 			}
 		}
 		

@@ -89,7 +89,7 @@ public class Water extends Terrain{
 
 		@Override
 		public void run(){
-			player.setHealth(-1);
+			player.setHealth(-2);
 		}
 	}
 }

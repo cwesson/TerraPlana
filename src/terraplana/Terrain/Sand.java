@@ -16,26 +16,25 @@ public class Sand extends Terrain{
 	}
 
 	@Override
-	public boolean onEnter(Actor player, Direction dir){
-		// TODO Auto-generated method stub
+	public boolean onEnter(Actor actor, Direction dir){
+		return actor.hasAttribute("movement.walk");
+	}
+
+	@Override
+	public boolean onEntered(Actor actor, Direction dir, Tile last){
+		if(actor.isPlayer() && !actor.hasAttribute("movement.sand.safe")){
+			actor.setHealth(-1);
+		}
 		return false;
 	}
 
 	@Override
-	public boolean onEntered(Actor player, Direction dir, Tile last){
-		// TODO Auto-generated method stub
-		return false;
+	public boolean onExit(Actor actor, Direction dir, Tile next){
+		return true;
 	}
 
 	@Override
-	public boolean onExit(Actor player, Direction dir, Tile next){
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean onExited(Actor player, Direction dir, Tile next){
-		// TODO Auto-generated method stub
+	public boolean onExited(Actor actor, Direction dir, Tile next){
 		return false;
 	}
 	
