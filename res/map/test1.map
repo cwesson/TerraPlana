@@ -8,6 +8,7 @@ item Flippers 5 3
 item Key 5 6
 item Balloon 3 7
 item Balloon 7 3
+landscape Igloo 1 6
 creature Ant 9 10 north
 
 map

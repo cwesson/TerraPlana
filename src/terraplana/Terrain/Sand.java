@@ -8,6 +8,7 @@ package terraplana.Terrain;
 import terraplana.Direction;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
+import terraplana.Movable.Movable;
 
 public class Sand extends Terrain{
 
@@ -35,6 +36,16 @@ public class Sand extends Terrain{
 
 	@Override
 	public boolean onExited(Actor actor, Direction dir, Tile next){
+		return false;
+	}
+	
+	@Override
+	public boolean onEnter(Movable move, Direction dir){
+		return true;
+	}
+	
+	@Override
+	public boolean onExit(Movable move, Direction dir, Tile next){
 		return false;
 	}
 	

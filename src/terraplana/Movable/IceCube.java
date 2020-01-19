@@ -11,7 +11,6 @@ import terraplana.Actor.Player;
 import terraplana.Terrain.Ice;
 import terraplana.Terrain.Lava;
 import terraplana.Terrain.Stone;
-import terraplana.Terrain.Water;
 
 public class IceCube extends Movable{
 
@@ -28,19 +27,12 @@ public class IceCube extends Movable{
 
 	@Override
 	public boolean onPush(Player player, Direction dir, Tile next){
-		Class<?> terrain = next.getTerrain().getClass();
-		if(terrain.equals(player.getTile().getTerrain().getClass())){
-			return true;
-		}else if(terrain.equals(Water.class) || terrain.equals(Lava.class) || terrain.equals(Stone.class)){
-			return true;
-		}else{
-			return false;
-		}
+		return true;
 	}
 
 	@Override
 	public boolean onPushed(Player player, Direction dir, Tile next){
-		if(next.getTerrain().getClass().equals(Water.class)){
+		if(next.hasAttribute("element.water")){
 			next.setTerrain(new Ice(next));
 			next.removeMovable();
 		}else if(next.getTerrain().getClass().equals(Lava.class)){

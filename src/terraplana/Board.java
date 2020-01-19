@@ -19,6 +19,7 @@ import terraplana.Actor.Actor;
 import terraplana.Actor.Player;
 import terraplana.Actor.Creature.Creature;
 import terraplana.Item.Item;
+import terraplana.Landscape.Landscape;
 import terraplana.Movable.Movable;
 import terraplana.Terrain.*;
 
@@ -70,6 +71,8 @@ public class Board{
 				parseMovable(cmd);
 			}else if(cmd[0].equals("creature")){
 				parseCreature(cmd);
+			}else if(cmd[0].equals("landscape")){
+				parseLandscape(cmd);
 			}
 		}
 	}
@@ -87,6 +90,8 @@ public class Board{
 				cmdQueue.add(line);
 			}else if(cmd[0].equals("creature")){
 				cmdQueue.add(line);
+			}else if(cmd[0].equals("landscape")){
+				cmdQueue.add(line);
 			}else if(cmd[0].equals("start")){
 				start = new Position(Integer.parseInt(cmd[1]), Integer.parseInt(cmd[2]));
 			}else if(cmd[0].equals("end")){
@@ -100,6 +105,8 @@ public class Board{
 				}else{
 					parseFile(new URL(parent + "/" + cmd[1]).openStream(), parent);
 				}
+			}else {
+				Debug.err.println("Unknown map command " + cmd[0]);
 			}
 		}
 	}
@@ -112,6 +119,8 @@ public class Board{
 		Constructor<?> con = cls.getConstructor(args.getClass());
 		Creature creature = (Creature)con.newInstance((Object)args);
 		Position pos = new Position(Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3]));
+		
+		Debug.out.println("Creature " + type);
 		creature.setTile(this.at(pos));
 		actors.put(creature, pos);
 		creatures.add(creature);
@@ -130,7 +139,8 @@ public class Board{
 		Constructor<?> con = cls.getConstructor(args.getClass());
 		Item item = (Item)con.newInstance((Object)args);
 		item.setPosition(pos);
-		
+
+		Debug.out.println("Item " + type);
 		at(pos).addItem(item);
 	}
 
@@ -146,8 +156,26 @@ public class Board{
 		Class<?> cls = Class.forName("terraplana.Movable." + type);
 		Constructor<?> con = cls.getConstructor(args.getClass());
 		Movable mv = (Movable)con.newInstance((Object)args);
-		
+
+		Debug.out.println("Movable " + type);
 		at(pos).addMovable(mv);
+	}
+	
+	private void parseLandscape(String[] cmd) throws Exception{
+		// Landscape type
+		String type = cmd[1];
+		// Landscape position
+		Position pos = new Position(Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3]));
+		
+		// Landscape specific
+		String[] args = new String[cmd.length-4];
+		System.arraycopy(cmd, 4, args, 0, cmd.length-4);
+		Class<?> cls = Class.forName("terraplana.Landscape." + type);
+		Constructor<?> con = cls.getConstructor(Tile.class);
+		Landscape scape = (Landscape)con.newInstance(at(pos));
+		
+		Debug.out.println("Landscape " + type);
+		at(pos).setLandscape(scape);
 	}
 
 	private void parseMap(BufferedReader in) throws Exception{
@@ -267,21 +295,21 @@ public class Board{
 		Tile oldTile = this.at(pos);
 		Tile newTile = this.at(newPos);
 		Tile pushTile = this.at(pushPos);
-		if(oldTile.getTerrain().onExit(actor, dir, newTile)){
-			if(newTile.getTerrain().onEnter(actor, dir)){
+		if(oldTile.onExit(actor, dir, newTile)){
+			if(newTile.onEnter(actor, dir)){
 				boolean pushed = true;
 				if(actor.isPlayer() && newTile.hasMovable() && pushTile != null){
 					if(!pushTile.hasMovable()){
 						Movable mv = newTile.getMovable();
-						if(newTile.getTerrain().onExit(mv, dir, pushTile)){
-							if(pushTile.getTerrain().onEnter(mv, dir)){
+						if(newTile.onExit(mv, dir, pushTile)){
+							if(pushTile.onEnter(mv, dir)){
 								if(mv.onPush((Player)actor, dir, pushTile)){
 									newTile.removeMovable();
 									pushTile.addMovable(mv);
-									newTile.getTerrain().onExited(mv, dir, pushTile);
+									newTile.onExited(mv, dir, pushTile);
 									mv.onPushed((Player)actor, dir, pushTile);
-									pushTile.getTerrain().onEntered(mv, dir, newTile);
-								}else{
+									pushTile.onEntered(mv, dir, newTile);
+								}else {
 									pushed = false;
 								}
 							}else{
@@ -298,7 +326,7 @@ public class Board{
 					actors.put(actor, newPos);
 					actor.setTile(newTile);
 					actor.setDirection(dir);
-					oldTile.getTerrain().onExited(actor, dir, newTile);
+					oldTile.onExited(actor, dir, newTile);
 					if(actor.isPlayer()){
 						List<Item> items = newTile.getItems();
 						for(Item it : items){
@@ -311,11 +339,11 @@ public class Board{
 							}
 						}
 					}
-					newTile.getTerrain().onEntered(actor, dir, oldTile);
+					newTile.onEntered(actor, dir, oldTile);
 					if(actor.isPlayer()){
 						if(newPos.equals(this.getEnd())){
-							newTile.getTerrain().onExit(actor, dir, null);
-							newTile.getTerrain().onExited(actor, dir, null);
+							newTile.onExit(actor, dir, null);
+							newTile.onExited(actor, dir, null);
 							Debug.out.println("End of level.");
 							this.next((Player)actor);
 						}

@@ -13,7 +13,6 @@ import terraplana.Position;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Actor.Player;
-import terraplana.Item.IceSkates;
 
 public class Ice extends Terrain{
 
@@ -29,7 +28,7 @@ public class Ice extends Terrain{
 	@Override
 	public boolean onEntered(Actor actor, Direction dir, Tile last){
 		if(actor.isPlayer()){
-			if(!actor.hasAttribute("movement.skate.safe")){
+			if(!actor.hasAttribute("movement.skate.safe") && !tile.hasAttribute("movement.skate.safe")){
 				actor.blockInput();
 				new IceTimer(actor, dir);
 			}else{
@@ -42,7 +41,7 @@ public class Ice extends Terrain{
 	@Override
 	public boolean onExit(Actor actor, Direction dir, Tile next){
 		if(actor.isPlayer()){
-			if(!((Player)actor).hasItem(IceSkates.class)){
+			if(!((Player)actor).hasAttribute("movement.skate.safe") && !next.hasAttribute("movement.skate.safe")){
 				Position pos = actor.getTile().getBoard().getPosition(actor);
 				pos.move(dir);
 				Terrain terr = next.getTerrain();

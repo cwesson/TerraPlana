@@ -24,6 +24,7 @@ import terraplana.Actor.Actor;
 import terraplana.Actor.Player;
 import terraplana.Actor.Creature.Creature;
 import terraplana.Item.Item;
+import terraplana.Landscape.Landscape;
 import terraplana.Movable.Movable;
 import terraplana.Terrain.Terrain;
 
@@ -104,6 +105,17 @@ public class Display extends JPanel implements KeyListener{
 							type = type.substring(type.lastIndexOf(".")+1);
 							Image img = icache.request("img/Terrain/" + type + ".png");
 							foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
+						}
+						
+						// Draw Landscape.
+						if(cell.hasLandscape()) {
+							Landscape scape = cell.getLandscape();
+							String type = scape.getClass().getName();
+							type = type.substring(type.lastIndexOf(".")+1);
+							int ix = j;
+							int iy = i;
+							Image img = icache.request("img/Landscape/" + type + ".png");
+							foreground.drawImage(img, ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy, this);
 						}
 						
 						// Draw items.

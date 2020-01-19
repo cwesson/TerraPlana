@@ -27,14 +27,7 @@ public class Box extends Movable{
 
 	@Override
 	public boolean onPush(Player player, Direction dir, Tile next){
-		Class<?> terrain = next.getTerrain().getClass();
-		if(terrain.equals(player.getTile().getTerrain().getClass())){
-			return true;
-		}else if(terrain.equals(Water.class) || terrain.equals(Lava.class)){
-			return true;
-		}else{
-			return false;
-		}
+		return true;
 	}
 
 	@Override
