@@ -76,7 +76,13 @@ public class Ice extends Terrain{
 
 		@Override
 		public void run(){
-			actor.getTile().getBoard().moveActor(actor, dir);
+			boolean moved = false;
+			while(!moved) {
+				moved = actor.getTile().getBoard().moveActor(actor, dir);
+				if(!moved) {
+					this.dir = this.dir.invert();
+				}
+			}
 		}
 	}
 }
