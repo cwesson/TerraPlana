@@ -24,8 +24,8 @@ import terraplana.Actor.Actor;
 import terraplana.Actor.Player;
 import terraplana.Actor.Creature.Creature;
 import terraplana.Item.Item;
-import terraplana.Landscape.Landscape;
 import terraplana.Movable.Movable;
+import terraplana.Terrain.Landscape.Landscape;
 import terraplana.Terrain.Terrain;
 
 public class Display extends JPanel implements KeyListener{
@@ -100,34 +100,36 @@ public class Display extends JPanel implements KeyListener{
 				for(int j = 0; j < board.getWidth(); j++){
 					Tile cell = board.at(new Position(j, i));
 					if(cell != null){
-						if(cell.getTerrain() != Terrain.VOID){
-							String type = cell.getTerrain().getClass().getName();
+						Terrain terra = cell.getTerrain();
+						if(terra != Terrain.VOID){
+							Landscape scape = null;
+							if(Landscape.class.isAssignableFrom(terra.getClass())){
+								scape = (Landscape)terra;
+								terra = scape.getTerrain();
+							}
+							// Draw terrain.
+							String type = terra.getClass().getName();
 							type = type.substring(type.lastIndexOf(".")+1);
 							Image img = icache.request("img/Terrain/" + type + ".png");
 							foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
-						}
-						
-						// Draw Landscape.
-						if(cell.hasLandscape()) {
-							Landscape scape = cell.getLandscape();
-							String type = scape.getClass().getName();
-							type = type.substring(type.lastIndexOf(".")+1);
-							int ix = j;
-							int iy = i;
-							Image img = icache.request("img/Landscape/" + type + ".png");
-							foreground.drawImage(img, ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy, this);
+							
+							// Draw Landscape.
+							if(scape != null){
+								type = scape.getClass().getName();
+								type = type.substring(type.lastIndexOf(".")+1);
+								img = icache.request("img/Landscape/" + type + ".png");
+								foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
+							}
 						}
 						
 						// Draw items.
 						for(Item it : cell.getItems()){
 							String type = it.getClass().getName();
 							type = type.substring(type.lastIndexOf(".")+1);
-							int ix = it.getPosition().getX();
-							int iy = it.getPosition().getY();
 							Image img = icache.request("img/Item/" + type + ".png");
-							foreground.drawImage(img, ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy, this);
+							foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
 							if(it.getCount() > 1){
-								foreground.drawString(it.getCount()+"", ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy);
+								foreground.drawString(it.getCount()+"", ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy);
 							}
 						}
 						
@@ -136,10 +138,8 @@ public class Display extends JPanel implements KeyListener{
 							Movable mv = cell.getMovable();
 							String type = mv.getClass().getName();
 							type = type.substring(type.lastIndexOf(".")+1);
-							int ix = j;
-							int iy = i;
 							Image img = icache.request("img/Movable/" + type + ".png");
-							foreground.drawImage(img, ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy, this);
+							foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
 						}
 					}
 				}
@@ -275,7 +275,7 @@ public class Display extends JPanel implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent key){
-		Debug.out.println("keyPressed");
+		Debug.info("keyPressed");
 		code = key.getKeyCode();
 	}
 	

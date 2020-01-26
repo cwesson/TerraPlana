@@ -14,6 +14,7 @@ import terraplana.Direction;
 import terraplana.Position;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
+import terraplana.Movable.Movable;
 
 public class Water extends Terrain{
 	
@@ -72,6 +73,16 @@ public class Water extends Terrain{
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public boolean onEnter(Movable move, Direction dir){
+		return true;
+	}
+	
+	@Override
+	public boolean onExit(Movable move, Direction dir, Tile next){
+		return false;
 	}
 	
 	public String toString(){

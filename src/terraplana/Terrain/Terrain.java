@@ -14,9 +14,14 @@ import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
 
-
 public abstract class Terrain implements Attributes{
-	public static final Terrain VOID = null;
+	private static class Sky extends Terrain {
+		public Sky() {
+			super(null);
+		}
+	}
+
+	public static final Terrain VOID = new Sky();
 	
 	protected List<String> attributes = new ArrayList<String>();
 	protected Tile tile;
@@ -72,7 +77,7 @@ public abstract class Terrain implements Attributes{
 	 * @return true if the Movable should be allowed to enter the cell.
 	 */
 	public boolean onEnter(Movable move, Direction dir){
-		return true;
+		return false;
 	}
 	
 	/**
@@ -82,7 +87,7 @@ public abstract class Terrain implements Attributes{
 	 * @return Currently ignored.
 	 */
 	public boolean onEntered(Movable move, Direction dir, Tile last){
-		return true;
+		return false;
 	}
 	
 	/**

@@ -13,6 +13,7 @@ public class TerraPlana{
 	 * @param args
 	 */
 	public static void main(String[] args){
+		Debug.disable();
 		String map = null;
 		String code = "";
 		// Parse command line arguments.
@@ -47,7 +48,7 @@ public class TerraPlana{
 			}
 			new Display(player);
 		}catch(Exception e) {
-			Debug.err.println("Could not open game file " + map);
+			Debug.error("Could not open game file " + map);
 			e.printStackTrace();
 		}
 	}

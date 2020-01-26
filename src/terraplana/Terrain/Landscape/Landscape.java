@@ -3,7 +3,7 @@
  * @author Conlan Wesson
  */
 
-package terraplana.Landscape;
+package terraplana.Terrain.Landscape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +13,15 @@ import terraplana.Direction;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
+import terraplana.Terrain.Terrain;
 
-public class Landscape implements Attributes{
-	public static final Landscape NONE = null;
-	
+public class Landscape extends Terrain implements Attributes{
 	protected List<String> attributes = new ArrayList<String>();
-	protected Tile tile;
+	protected Terrain terrain;
 	
 	public Landscape(Tile place){
-		tile = place;
+		super(place);
+		terrain = tile.getTerrain();
 	}
 	
 	/**
@@ -30,8 +30,9 @@ public class Landscape implements Attributes{
 	 * @param dir The Direction the Player moved.
 	 * @return true if the Player should be allowed to enter the cell.
 	 */
+	@Override
 	public boolean onEnter(Actor actor, Direction dir){
-		return true;
+		return terrain.onEnter(actor, dir);
 	}
 	
 	/**
@@ -40,8 +41,9 @@ public class Landscape implements Attributes{
 	 * @param dir The Direction the Player moved.
 	 * @return Currently ignored.
 	 */
+	@Override
 	public boolean onEntered(Actor actor, Direction dir, Tile last){
-		return true;
+		return terrain.onEntered(actor, dir, last);
 	}
 	
 	/**
@@ -50,8 +52,9 @@ public class Landscape implements Attributes{
 	 * @param dir The Direction the Player moved.
 	 * @return true if the Player should be allowed to exit the cell.
 	 */
+	@Override
 	public boolean onExit(Actor actor, Direction dir, Tile next){
-		return true;
+		return terrain.onExit(actor, dir, next);
 	}
 
 	/**
@@ -60,8 +63,9 @@ public class Landscape implements Attributes{
 	 * @param dir The Direction the Player moved.
 	 * @return Currently ignored.
 	 */
+	@Override
 	public boolean onExited(Actor actor, Direction dir, Tile next){
-		return true;
+		return terrain.onExited(actor, dir, next);
 	}
 	
 	/**
@@ -70,8 +74,9 @@ public class Landscape implements Attributes{
 	 * @param dir The Direction the Movable moved.
 	 * @return true if the Movable should be allowed to enter the cell.
 	 */
+	@Override
 	public boolean onEnter(Movable move, Direction dir){
-		return false;
+		return terrain.onEnter(move, dir);
 	}
 	
 	/**
@@ -80,8 +85,9 @@ public class Landscape implements Attributes{
 	 * @param dir The Direction the Movable moved.
 	 * @return Currently ignored.
 	 */
+	@Override
 	public boolean onEntered(Movable move, Direction dir, Tile last){
-		return false;
+		return terrain.onEntered(move, dir, last);
 	}
 	
 	/**
@@ -90,8 +96,9 @@ public class Landscape implements Attributes{
 	 * @param dir The Direction the Movable moved.
 	 * @return true if the Movable should be allowed to exit the cell.
 	 */
+	@Override
 	public boolean onExit(Movable move, Direction dir, Tile next){
-		return false;
+		return terrain.onExit(move, dir, next);
 	}
 
 	/**
@@ -100,15 +107,17 @@ public class Landscape implements Attributes{
 	 * @param dir The Direction the Movable moved.
 	 * @return Currently ignored.
 	 */
+	@Override
 	public boolean onExited(Movable move, Direction dir, Tile next){
-		return false;
+		return terrain.onExited(move, dir, next);
 	}
 
 	@Override
 	public boolean hasAttribute(String attr){
-		if(attributes.contains(attr)){
-			return true;
-		}
-		return false;
+		return (attributes.contains(attr) || terrain.hasAttribute(attr));
+	}
+	
+	public Terrain getTerrain(){
+		return terrain;
 	}
 }

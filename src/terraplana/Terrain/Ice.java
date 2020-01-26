@@ -13,6 +13,7 @@ import terraplana.Position;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Actor.Player;
+import terraplana.Movable.Movable;
 
 public class Ice extends Terrain{
 
@@ -55,6 +56,16 @@ public class Ice extends Terrain{
 
 	@Override
 	public boolean onExited(Actor actor, Direction dir, Tile next){
+		return true;
+	}
+	
+	@Override
+	public boolean onEnter(Movable move, Direction dir){
+		return true;
+	}
+	
+	@Override
+	public boolean onExit(Movable move, Direction dir, Tile next){
 		return true;
 	}
 	

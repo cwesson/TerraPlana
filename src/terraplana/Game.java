@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,10 @@ public class Game{
 		BufferedReader in = new BufferedReader(new InputStreamReader(file));
 		String line = "";
 		while((line = in.readLine()) != null){
+			line = line.trim();
+			if(line.length() == 0) {
+				continue;
+			}
 			String cmd[] = line.split("\\s+");
 			if(cmd[0].equals("title")){
 				title = cmd[1];
@@ -66,6 +71,12 @@ public class Game{
 					codes.put(cmd[2], level);
 				}
 				level++;
+			}else if(cmd[0].equals("title")){
+				title = String.join(" ", Arrays.copyOfRange(cmd, 1, cmd.length));
+			}else if(cmd[0].equals("desc")){
+				desc = String.join(" ", Arrays.copyOfRange(cmd, 1, cmd.length));
+			}else{
+				Debug.warning("Unknown game command " + cmd[0]);
 			}
 		}
 	}

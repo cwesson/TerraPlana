@@ -26,7 +26,7 @@ public class Sand extends Terrain{
 		if(actor.isPlayer() && !actor.hasAttribute("movement.sand.safe")){
 			actor.setHealth(-1);
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class Sand extends Terrain{
 
 	@Override
 	public boolean onExited(Actor actor, Direction dir, Tile next){
-		return false;
+		return true;
 	}
 	
 	@Override

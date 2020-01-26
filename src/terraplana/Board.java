@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +20,9 @@ import terraplana.Actor.Actor;
 import terraplana.Actor.Player;
 import terraplana.Actor.Creature.Creature;
 import terraplana.Item.Item;
-import terraplana.Landscape.Landscape;
 import terraplana.Movable.Movable;
-import terraplana.Terrain.*;
+import terraplana.Terrain.Terrain;
+import terraplana.Terrain.Landscape.Landscape;
 
 public class Board{
 	private List<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();
@@ -37,6 +38,8 @@ public class Board{
 	private URL url = null;
 	private String file = null;
 	private List<String> cmdQueue = new ArrayList<String>();
+	private String title = "";
+	private String desc = "";
 	
 	public Board(String path, Game game, int num) throws Exception{
 		local = true;
@@ -81,6 +84,10 @@ public class Board{
 		BufferedReader in = new BufferedReader(new InputStreamReader(file));
 		String line = "";
 		while((line = in.readLine()) != null){
+			line = line.trim();
+			if(line.length() == 0) {
+				continue;
+			}
 			String cmd[] = line.split("\\s+");
 			if(cmd[0].equals("terrain")){
 				parseTerrain(cmd);
@@ -105,8 +112,12 @@ public class Board{
 				}else{
 					parseFile(new URL(parent + "/" + cmd[1]).openStream(), parent);
 				}
-			}else {
-				Debug.err.println("Unknown map command " + cmd[0]);
+			}else if(cmd[0].equals("title")){
+				title = String.join(" ", Arrays.copyOfRange(cmd, 1, cmd.length));
+			}else if(cmd[0].equals("desc")){
+				desc = String.join(" ", Arrays.copyOfRange(cmd, 1, cmd.length));
+			}else{
+				Debug.info("Unknown map command " + cmd[0]);
 			}
 		}
 	}
@@ -120,7 +131,7 @@ public class Board{
 		Creature creature = (Creature)con.newInstance((Object)args);
 		Position pos = new Position(Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3]));
 		
-		Debug.out.println("Creature " + type);
+		Debug.info("Creature " + type);
 		creature.setTile(this.at(pos));
 		actors.put(creature, pos);
 		creatures.add(creature);
@@ -140,7 +151,7 @@ public class Board{
 		Item item = (Item)con.newInstance((Object)args);
 		item.setPosition(pos);
 
-		Debug.out.println("Item " + type);
+		Debug.info("Item " + type);
 		at(pos).addItem(item);
 	}
 
@@ -157,7 +168,7 @@ public class Board{
 		Constructor<?> con = cls.getConstructor(args.getClass());
 		Movable mv = (Movable)con.newInstance((Object)args);
 
-		Debug.out.println("Movable " + type);
+		Debug.info("Movable " + type);
 		at(pos).addMovable(mv);
 	}
 	
@@ -170,12 +181,12 @@ public class Board{
 		// Landscape specific
 		String[] args = new String[cmd.length-4];
 		System.arraycopy(cmd, 4, args, 0, cmd.length-4);
-		Class<?> cls = Class.forName("terraplana.Landscape." + type);
+		Class<?> cls = Class.forName("terraplana.Terrain.Landscape." + type);
 		Constructor<?> con = cls.getConstructor(Tile.class);
 		Landscape scape = (Landscape)con.newInstance(at(pos));
 		
-		Debug.out.println("Landscape " + type);
-		at(pos).setLandscape(scape);
+		Debug.info("Landscape " + type);
+		at(pos).setTerrain(scape);
 	}
 
 	private void parseMap(BufferedReader in) throws Exception{
@@ -344,7 +355,7 @@ public class Board{
 						if(newPos.equals(this.getEnd())){
 							newTile.onExit(actor, dir, null);
 							newTile.onExited(actor, dir, null);
-							Debug.out.println("End of level.");
+							Debug.info("End of level.");
 							this.next((Player)actor);
 						}
 					}
@@ -357,5 +368,13 @@ public class Board{
 
 	public Position getPosition(Actor player){
 		return actors.get(player).clone();
+	}
+	
+	public String getTitle(){
+		return title;
+	}
+	
+	public String getDescription(){
+		return desc;
 	}
 }

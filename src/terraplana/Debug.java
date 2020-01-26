@@ -5,26 +5,29 @@
 
 package terraplana;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Debug{
-	public static PrintStream out = new PrintStream(new NullOutput());
-	public static PrintStream err = System.err;
+	private static Logger logger = Logger.getLogger("");
 
 	public static void enable(){
-		out = System.out;
+		logger.setLevel(Level.INFO);
 	}
 	
 	public static void disable(){
-		out = new PrintStream(new NullOutput());
+		logger.setLevel(Level.WARNING);
 	}
 	
-	private static class NullOutput extends OutputStream{
-		@Override
-		public void write(int b) throws IOException{
-			// ignore.
-		}
+	public static void error(String msg) {
+		logger.severe(msg);
+	}
+	
+	public static void warning(String msg) {
+		logger.warning(msg);
+	}
+	
+	public static void info(String msg) {
+		logger.info(msg);
 	}
 }

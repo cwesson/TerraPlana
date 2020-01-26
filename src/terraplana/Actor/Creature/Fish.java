@@ -55,7 +55,7 @@ public class Fish extends Creature{
 	protected Direction tick(int time){
 		Position newPos = getTile().getBoard().getPosition(this);
 		newPos.move(direction);
-		Debug.out.println("conflict="+conflict+"    count="+count);
+		Debug.info("conflict="+conflict+"    count="+count);
 		if(count <= 4 || conflict > 0){
 			count++;
 			if(conflict > 0){

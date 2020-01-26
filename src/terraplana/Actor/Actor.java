@@ -71,10 +71,10 @@ public abstract class Actor implements Attributes{
 				health = 0;
 				lives--;
 			}
-			Debug.out.println(this);
+			Debug.info(this.toString());
 			if(lives <= 0){
 				status = Status.STATUS_DEAD;
-				Debug.out.println("Status = " + status);
+				Debug.info("Status = " + status);
 			}else{
 				status = Status.STATUS_OK;
 			}
