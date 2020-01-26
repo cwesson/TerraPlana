@@ -182,8 +182,8 @@ public class Board{
 		String[] args = new String[cmd.length-4];
 		System.arraycopy(cmd, 4, args, 0, cmd.length-4);
 		Class<?> cls = Class.forName("terraplana.Terrain.Landscape." + type);
-		Constructor<?> con = cls.getConstructor(Tile.class);
-		Landscape scape = (Landscape)con.newInstance(at(pos));
+		Constructor<?> con = cls.getConstructor(Tile.class, args.getClass());
+		Landscape scape = (Landscape)con.newInstance(at(pos), args);
 		
 		Debug.info("Landscape " + type);
 		at(pos).setTerrain(scape);

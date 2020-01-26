@@ -11,7 +11,7 @@ import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
 
 public class Igloo extends Landscape {
-	public Igloo(Tile place) {
+	public Igloo(Tile place, String[] args) {
 		super(place);
 		attributes.add("movement.skate.safe");
 	}

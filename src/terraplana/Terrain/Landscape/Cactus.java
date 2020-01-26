@@ -11,7 +11,7 @@ import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
 
 public class Cactus extends Landscape {
-	public Cactus(Tile place) {
+	public Cactus(Tile place, String[] args) {
 		super(place);
 	}
 	
