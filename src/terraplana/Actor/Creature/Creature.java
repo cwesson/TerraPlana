@@ -7,6 +7,7 @@ package terraplana.Actor.Creature;
 
 import terraplana.Direction;
 import terraplana.Actor.Actor;
+import terraplana.Projectile.Projectile;
 
 public abstract class Creature extends Actor{
 	public Creature(String args[]){
@@ -21,6 +22,12 @@ public abstract class Creature extends Actor{
 	
 	public void setDirection(Direction dir){
 		direction = dir;
+	}
+
+	@Override
+	public void onConflict(Projectile proj){
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

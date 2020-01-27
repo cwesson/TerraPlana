@@ -15,6 +15,7 @@ import terraplana.Debug;
 import terraplana.Direction;
 import terraplana.Tile;
 import terraplana.Item.Item;
+import terraplana.Projectile.Projectile;
 
 public abstract class Actor implements Attributes{
 	public enum Status {
@@ -34,6 +35,7 @@ public abstract class Actor implements Attributes{
 	private ActorTimer timer;
 
 	public abstract void onConflict(Actor act);
+	public abstract void onConflict(Projectile proj);
 	
 	protected void setInterval(int time){
 		if(timer != null){
@@ -153,7 +155,8 @@ public abstract class Actor implements Attributes{
 		}
 		return false;
 	}
-	
+
+	@Override
 	public void finalize(){
 		if(timer != null){
 			timer.cancel();

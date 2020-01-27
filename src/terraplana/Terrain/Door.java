@@ -11,6 +11,7 @@ import terraplana.Actor.Actor;
 import terraplana.Actor.Player;
 import terraplana.Item.Item;
 import terraplana.Item.Key;
+import terraplana.Projectile.Projectile;
 
 public class Door extends Terrain{
 	private Direction enter = null;
@@ -53,6 +54,11 @@ public class Door extends Terrain{
 				}
 			}
 		}
+		return false;
+	}
+
+	@Override
+	public boolean onEnter(Projectile proj, Direction dir){
 		return false;
 	}
 	

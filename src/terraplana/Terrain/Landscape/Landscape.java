@@ -13,9 +13,10 @@ import terraplana.Direction;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
+import terraplana.Projectile.Projectile;
 import terraplana.Terrain.Terrain;
 
-public class Landscape extends Terrain implements Attributes{
+public abstract class Landscape extends Terrain implements Attributes{
 	protected List<String> attributes = new ArrayList<String>();
 	protected Terrain terrain;
 	
@@ -110,6 +111,46 @@ public class Landscape extends Terrain implements Attributes{
 	@Override
 	public boolean onExited(Movable move, Direction dir, Tile next){
 		return terrain.onExited(move, dir, next);
+	}
+	
+	/**
+	 * Called when a Projectile attempts to move onto the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return true if the Player should be allowed to enter the cell.
+	 */
+	public boolean onEnter(Projectile proj, Direction dir){
+		return terrain.onEnter(proj, dir);
+	}
+	
+	/**
+	 * Called after a Projectile enters the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return Currently ignored.
+	 */
+	public boolean onEntered(Projectile proj, Direction dir, Tile last){
+		return terrain.onEntered(proj, dir, last);
+	}
+	
+	/**
+	 * Called when a Projectile attempts to move out of the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return true if the Player should be allowed to exit the cell.
+	 */
+	public boolean onExit(Projectile proj, Direction dir, Tile next){
+		return terrain.onExit(proj, dir, next);
+	}
+
+	/**
+	 * Called after a Projectile exits the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return Currently ignored.
+	 */
+	public boolean onExited(Projectile proj, Direction dir, Tile next){
+		return terrain.onExited(proj, dir, next);
 	}
 
 	@Override

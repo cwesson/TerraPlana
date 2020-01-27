@@ -7,6 +7,7 @@ package terraplana.Actor;
 
 import terraplana.Direction;
 import terraplana.Display;
+import terraplana.Projectile.Projectile;
 
 public class Player extends Actor{
 	private static int sequence = 0;
@@ -51,6 +52,12 @@ public class Player extends Actor{
 
 	@Override
 	public void onConflict(Actor act){
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConflict(Projectile proj) {
 		// TODO Auto-generated method stub
 		
 	}

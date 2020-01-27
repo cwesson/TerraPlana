@@ -13,6 +13,7 @@ import terraplana.Direction;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
+import terraplana.Projectile.Projectile;
 
 public abstract class Terrain implements Attributes{
 	private static class Sky extends Terrain {
@@ -108,6 +109,46 @@ public abstract class Terrain implements Attributes{
 	 */
 	public boolean onExited(Movable move, Direction dir, Tile next){
 		return false;
+	}
+	
+	/**
+	 * Called when a Projectile attempts to move onto the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return true if the Player should be allowed to enter the cell.
+	 */
+	public boolean onEnter(Projectile proj, Direction dir){
+		return true;
+	}
+	
+	/**
+	 * Called after a Projectile enters the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return Currently ignored.
+	 */
+	public boolean onEntered(Projectile proj, Direction dir, Tile last){
+		return true;
+	}
+	
+	/**
+	 * Called when a Projectile attempts to move out of the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return true if the Player should be allowed to exit the cell.
+	 */
+	public boolean onExit(Projectile proj, Direction dir, Tile next){
+		return true;
+	}
+
+	/**
+	 * Called after a Projectile exits the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return Currently ignored.
+	 */
+	public boolean onExited(Projectile proj, Direction dir, Tile next){
+		return true;
 	}
 
 	@Override

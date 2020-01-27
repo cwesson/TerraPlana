@@ -9,6 +9,7 @@ import terraplana.Direction;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
+import terraplana.Projectile.Projectile;
 
 public class Wall extends Terrain{
 
@@ -43,6 +44,11 @@ public class Wall extends Terrain{
 
 	@Override
 	public boolean onEntered(Movable move, Direction dir, Tile last){
+		return false;
+	}
+
+	@Override
+	public boolean onEnter(Projectile proj, Direction dir){
 		return false;
 	}
 	

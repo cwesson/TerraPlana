@@ -21,6 +21,7 @@ import terraplana.Actor.Player;
 import terraplana.Actor.Creature.Creature;
 import terraplana.Item.Item;
 import terraplana.Movable.Movable;
+import terraplana.Projectile.Projectile;
 import terraplana.Terrain.Terrain;
 import terraplana.Terrain.Landscape.Landscape;
 
@@ -30,6 +31,7 @@ public class Board{
 	private Map<Actor, Position> actors = new HashMap<Actor, Position>();
 	private List<Creature> creatures = new ArrayList<Creature>();
 	private Map<Character, String> terrainmap = new HashMap<Character, String>();
+	private Map<Projectile, Position> projectiles = new HashMap<Projectile, Position>();
 	private int level = 0;
 	private Game game = null;
 	private Position start;
@@ -296,6 +298,10 @@ public class Board{
 	public List<Creature> getCreatures(){
 		return creatures;
 	}
+	
+	public Map<Projectile, Position> getProjectiles(){
+		return projectiles;
+	}
 
 	public boolean moveActor(Actor actor, Direction dir){
 		Position pos = actors.get(actor);
@@ -369,6 +375,12 @@ public class Board{
 	public Position getPosition(Actor player){
 		return actors.get(player).clone();
 	}
+
+	public Position getPosition(Projectile proj){
+		synchronized(projectiles){
+			return projectiles.get(proj).clone();
+		}
+	}
 	
 	public String getTitle(){
 		return title;
@@ -376,5 +388,41 @@ public class Board{
 	
 	public String getDescription(){
 		return desc;
+	}
+
+	public boolean moveProjectile(Projectile proj, Direction dir){
+		synchronized(projectiles){
+			Position pos = projectiles.get(proj);
+			Position newPos = pos.clone();
+			newPos.move(dir);
+			Tile oldTile = this.at(pos);
+			Tile newTile = this.at(newPos);
+			if(oldTile.onExit(proj, dir, newTile)){
+				if(newTile.onEnter(proj, dir)){
+					oldTile.onExited(proj, dir, newTile);
+					oldTile.removeProjectile(proj);
+					projectiles.replace(proj, newPos);
+					newTile.addProjectile(proj);
+					newTile.onEntered(proj, dir, oldTile);
+					return true;
+				}
+			}
+			proj.onImpact();
+			removeProjectile(proj);
+			return false;
+		}
+	}
+
+	public void addProjectile(Projectile proj, Position pos, Direction dir){
+		synchronized(projectiles){
+			projectiles.put(proj, pos);
+			moveProjectile(proj, dir);
+		}
+	}
+
+	public void removeProjectile(Projectile proj) {
+		synchronized(projectiles){
+			projectiles.remove(proj);
+		}
 	}
 }

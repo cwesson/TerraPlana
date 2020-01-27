@@ -25,6 +25,7 @@ import terraplana.Actor.Player;
 import terraplana.Actor.Creature.Creature;
 import terraplana.Item.Item;
 import terraplana.Movable.Movable;
+import terraplana.Projectile.Projectile;
 import terraplana.Terrain.Landscape.Landscape;
 import terraplana.Terrain.Terrain;
 
@@ -171,6 +172,19 @@ public class Display extends JPanel implements KeyListener{
 				int iy = creature.getTile().getBoard().getPosition(creature).getY();
 				Direction dir = creature.getDirection();
 				Image img = icache.request("img/Creature/" + type + "-" + dir + ".png");
+				foreground.drawImage(img, ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy, this);
+			}
+		}
+		
+		// Draw Projectiles.
+		{
+			for(Projectile proj : board.getProjectiles().keySet()) {
+				String type = proj.getClass().getName();
+				type = type.substring(type.lastIndexOf(".")+1);
+				int ix = board.getPosition(proj).getX();
+				int iy = board.getPosition(proj).getY();
+				Direction dir = proj.getDirection();
+				Image img = icache.request("img/Projectile/" + type + "-" + dir + ".png");
 				foreground.drawImage(img, ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy, this);
 			}
 		}

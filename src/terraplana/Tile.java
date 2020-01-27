@@ -11,6 +11,7 @@ import java.util.List;
 import terraplana.Actor.Actor;
 import terraplana.Item.Item;
 import terraplana.Movable.Movable;
+import terraplana.Projectile.Projectile;
 import terraplana.Terrain.Terrain;
 
 public class Tile{
@@ -18,6 +19,7 @@ public class Tile{
 	private List<Item> items = new ArrayList<Item>();
 	private Movable movable = null;
 	private List<Actor> actors = new ArrayList<Actor>();
+	private List<Projectile> projectiles = new ArrayList<Projectile>();
 	private Board board;
 	
 	public Tile(Board map, Terrain terr){
@@ -42,6 +44,28 @@ public class Tile{
 	public void removeActor(Actor act){
 		synchronized(actors){
 			actors.remove(act);
+		}
+	}
+	
+	public void addProjectile(Projectile proj){
+		synchronized(actors){
+			boolean done = false;
+			for(Actor other : actors){
+				other.onConflict(proj);
+				done = proj.onConflict(other);
+			}
+			if(done){
+				proj.onImpact();
+				board.removeProjectile(proj);
+			}else{
+				projectiles.add(proj);
+			}
+		}
+	}
+	
+	public void removeProjectile(Projectile proj){
+		synchronized(actors){
+			projectiles.remove(proj);
 		}
 	}
 	
@@ -163,6 +187,46 @@ public class Tile{
 	 */
 	public boolean onExited(Movable move, Direction dir, Tile next){
 		return terrain.onExited(move, dir, next);
+	}
+	
+	/**
+	 * Called when a Projectile attempts to move onto the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return true if the Player should be allowed to enter the cell.
+	 */
+	public boolean onEnter(Projectile proj, Direction dir){
+		return terrain.onEnter(proj, dir);
+	}
+	
+	/**
+	 * Called after a Projectile enters the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return Currently ignored.
+	 */
+	public boolean onEntered(Projectile proj, Direction dir, Tile last){
+		return terrain.onEntered(proj, dir, last);
+	}
+	
+	/**
+	 * Called when a Projectile attempts to move out of the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return true if the Player should be allowed to exit the cell.
+	 */
+	public boolean onExit(Projectile proj, Direction dir, Tile next){
+		return terrain.onExit(proj, dir, next);
+	}
+
+	/**
+	 * Called after a Projectile exits the cell.
+	 * @param proj The Projectile.
+	 * @param dir The Direction the Player moved.
+	 * @return Currently ignored.
+	 */
+	public boolean onExited(Projectile proj, Direction dir, Tile next){
+		return terrain.onExited(proj, dir, next);
 	}
 	
 	public boolean hasAttribute(String attr){
