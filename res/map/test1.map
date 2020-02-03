@@ -10,6 +10,8 @@ item Balloon 3 7
 item Balloon 7 3
 landscape Igloo 1 6
 landscape Gate 6 13 2
+landscape Teleport 3 11 10 9
+landscape Teleport 10 9 3 11
 creature SlimeBlob 9 10 north
 
 map

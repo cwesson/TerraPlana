@@ -13,6 +13,7 @@ public class Grass extends Terrain{
 
 	public Grass(Tile place){
 		super(place);
+		attributes.add("movement.walk");
 	}
 
 	@Override

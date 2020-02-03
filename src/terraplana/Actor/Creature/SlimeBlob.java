@@ -10,8 +10,6 @@ import terraplana.Position;
 import terraplana.Actor.Actor;
 import terraplana.Projectile.Projectile;
 import terraplana.Projectile.SlimeBall;
-import terraplana.Terrain.Grass;
-import terraplana.Terrain.Path;
 import terraplana.Terrain.Terrain;
 
 public class SlimeBlob extends Creature{
@@ -41,8 +39,7 @@ public class SlimeBlob extends Creature{
 		Position newPos = pos.clone();
 		newPos.move(dir);
 		Terrain terra = getTile().getBoard().at(newPos).getTerrain();
-		String name = terra.getClass().getName();
-		return (name.equals(Path.class.getName()) || name.equals(Grass.class.getName()));
+		return (terra.hasAttribute("movement.walk"));
 	}
 	
 	@Override

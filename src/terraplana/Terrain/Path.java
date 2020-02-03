@@ -14,6 +14,7 @@ public class Path extends Terrain{
 
 	public Path(Tile place){
 		super(place);
+		attributes.add("movement.walk");
 	}
 
 	@Override

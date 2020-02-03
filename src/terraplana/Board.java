@@ -307,6 +307,11 @@ public class Board{
 		Position pos = actors.get(actor);
 		Position newPos = pos.clone();
 		newPos.move(dir);
+		return moveActor(actor, dir, newPos);
+	}
+
+	public boolean moveActor(Actor actor, Direction dir, Position newPos){
+		Position pos = actors.get(actor);
 		Position pushPos = newPos.clone();
 		pushPos.move(dir);
 		Tile oldTile = this.at(pos);

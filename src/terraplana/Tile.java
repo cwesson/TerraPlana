@@ -85,8 +85,12 @@ public class Tile{
 		return list;
 	}
 	
-	public void addMovable(Movable mv){
-		movable = mv;
+	public boolean addMovable(Movable mv){
+		if(movable == null){
+			movable = mv;
+			return true;
+		}
+		return false;
 	}
 	
 	public void removeMovable(){
