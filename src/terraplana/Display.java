@@ -202,28 +202,24 @@ public class Display extends JPanel implements KeyListener{
 
 		double centerX = getWidth()/2.0;
 		double centerY = getHeight()/2.0;
-		double scale = Math.min((double)getWidth()/(double)DRAW_WIDTH, (double)getHeight()/(double)DRAW_HEIGHT);
-		double uiscale = scale;
-		if(scale > 2){
-			uiscale = scale/2.0 + 1.0;
-		}
-		int uiCenterLeft = (int)(centerX-(DRAW_WIDTH/2.0)*uiscale);
-		int uiWidth = (int)(DRAW_WIDTH*uiscale);
-		int uiImgSize = (int)(IMG_SIZE*uiscale);
+		double scale = Math.round(Math.min((double)getWidth()/(double)DRAW_WIDTH, (double)getHeight()/(double)DRAW_HEIGHT));
+		int uiCenterLeft = (int)(centerX-(DRAW_WIDTH/2.0)*scale);
+		int uiWidth = (int)(DRAW_WIDTH*scale);
+		int uiImgSize = (int)(IMG_SIZE*scale);
 		
 		// Draw the health bar.
 		{
 			int health = player.getHealth();
 			uibuffer.setColor(Color.GREEN);
-			uibuffer.fill3DRect(uiCenterLeft, 0, uiWidth, (int)(uiImgSize*uiscale), false);
+			uibuffer.fill3DRect(uiCenterLeft, 0, uiWidth, uiImgSize, false);
 			uibuffer.setColor(Color.RED);
 			int width = (int)(((100.0-(double)health)/100.0)*DRAW_WIDTH);
-			uibuffer.fill3DRect((int)(uiCenterLeft+(DRAW_WIDTH - width )*uiscale), 0, (int)(width*uiscale), (int)(uiImgSize*uiscale), true);
+			uibuffer.fill3DRect((int)(uiCenterLeft+(DRAW_WIDTH - width )*scale), 0, (int)(width*scale), uiImgSize, true);
 			
 			int lives = player.getLives();
 			Image img = icache.request("img/Item/Life.png");
 			for(int i = 0; i < lives; i++){
-				uibuffer.drawImage(img, uiCenterLeft+(i*uiImgSize), 0, (int)(uiImgSize*uiscale), (int)(uiImgSize*uiscale), this);
+				uibuffer.drawImage(img, uiCenterLeft+(i*uiImgSize), 0, uiImgSize, uiImgSize, this);
 			}
 		}
 		
@@ -254,8 +250,8 @@ public class Display extends JPanel implements KeyListener{
 			uibuffer.setColor(Color.BLACK);
 			
 			Font font = uibuffer.getFont();
-			Font fontsm = font.deriveFont(font.getSize()*(float)uiscale);
-			Font fontlg = font.deriveFont(font.getSize()*(float)uiscale*2);
+			Font fontsm = font.deriveFont(font.getSize()*(float)scale);
+			Font fontlg = font.deriveFont(font.getSize()*(float)scale*2);
 			
 			{
 				String str = "Game Over";

@@ -202,10 +202,14 @@ public class Board{
 				String type = terrainmap.get(c);
 				Tile cell = new Tile(this, terr);
 				if(c != null){
-					Class<?> cls = Class.forName("terraplana.Terrain." + type);
-					Constructor<?> con = cls.getConstructor(Tile.class);
-					terr = (Terrain)con.newInstance(cell);
-					cell.setTerrain(terr);
+					try {
+						Class<?> cls = Class.forName("terraplana.Terrain." + type);
+						Constructor<?> con = cls.getConstructor(Tile.class);
+						terr = (Terrain)con.newInstance(cell);
+						cell.setTerrain(terr);
+					}catch(Exception e) {
+						Debug.error("No terrain for \"" + c + "\"");
+					}
 				}
 				row.add(cell);
 			}

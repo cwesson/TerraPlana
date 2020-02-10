@@ -89,6 +89,7 @@ public class Game{
 		try{
 			getBoard(codes.get(code)).addPlayer(play);
 		}catch(Exception e){
+			Debug.warning("No code " + code);
 			getBoard(0).addPlayer(play);
 		}
 	}

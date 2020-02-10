@@ -8,3 +8,7 @@ terrain Sand .
 terrain Grass y
 terrain Metal =
 terrain Stone &
+terrain WalkwayNorth ^
+terrain WalkwaySouth v
+terrain WalkwayEast >
+terrain WalkwayWest <
