@@ -307,14 +307,14 @@ public class Board{
 		return projectiles;
 	}
 
-	public boolean moveActor(Actor actor, Direction dir){
+	public synchronized boolean moveActor(Actor actor, Direction dir){
 		Position pos = actors.get(actor);
 		Position newPos = pos.clone();
 		newPos.move(dir);
 		return moveActor(actor, dir, newPos);
 	}
 
-	public boolean moveActor(Actor actor, Direction dir, Position newPos){
+	public synchronized boolean moveActor(Actor actor, Direction dir, Position newPos){
 		Position pos = actors.get(actor);
 		Position pushPos = newPos.clone();
 		pushPos.move(dir);
@@ -381,14 +381,25 @@ public class Board{
 		return false;
 	}
 
-	public Position getPosition(Actor player){
-		return actors.get(player).clone();
+	public synchronized void removeActor(Actor act) {
+		Position pos = actors.get(act);
+		actors.remove(act);
+		at(pos).removeActor(act);
+		if(!act.isPlayer()){
+			creatures.remove(act);
+		}
 	}
 
-	public Position getPosition(Projectile proj){
-		synchronized(projectiles){
-			return projectiles.get(proj).clone();
+	public synchronized Position getPosition(Actor player){
+		if(actors.containsKey(player)){
+			return actors.get(player).clone();
+		}else{
+			return null;
 		}
+	}
+
+	public synchronized Position getPosition(Projectile proj){
+		return projectiles.get(proj).clone();
 	}
 	
 	public String getTitle(){
@@ -399,39 +410,36 @@ public class Board{
 		return desc;
 	}
 
-	public boolean moveProjectile(Projectile proj, Direction dir){
-		synchronized(projectiles){
-			Position pos = projectiles.get(proj);
-			Position newPos = pos.clone();
-			newPos.move(dir);
-			Tile oldTile = this.at(pos);
-			Tile newTile = this.at(newPos);
-			if(oldTile.onExit(proj, dir, newTile)){
-				if(newTile.onEnter(proj, dir)){
-					oldTile.onExited(proj, dir, newTile);
-					oldTile.removeProjectile(proj);
-					projectiles.replace(proj, newPos);
-					newTile.addProjectile(proj);
+	public synchronized boolean moveProjectile(Projectile proj, Direction dir){
+		Position pos = projectiles.get(proj);
+		Position newPos = pos.clone();
+		newPos.move(dir);
+		Tile oldTile = this.at(pos);
+		Tile newTile = this.at(newPos);
+		if(oldTile.onExit(proj, dir, newTile)){
+			if(newTile.onEnter(proj, dir)){
+				oldTile.onExited(proj, dir, newTile);
+				oldTile.removeProjectile(proj);
+				projectiles.replace(proj, newPos);
+				if(newTile.addProjectile(proj)){
 					newTile.onEntered(proj, dir, oldTile);
 					return true;
+				}else{
+					return false;
 				}
 			}
-			proj.onImpact();
-			removeProjectile(proj);
-			return false;
 		}
+		proj.onImpact();
+		removeProjectile(proj);
+		return false;
 	}
 
-	public void addProjectile(Projectile proj, Position pos, Direction dir){
-		synchronized(projectiles){
-			projectiles.put(proj, pos);
-			moveProjectile(proj, dir);
-		}
+	public synchronized void addProjectile(Projectile proj, Position pos, Direction dir){
+		projectiles.put(proj, pos);
+		moveProjectile(proj, dir);
 	}
 
-	public void removeProjectile(Projectile proj) {
-		synchronized(projectiles){
-			projectiles.remove(proj);
-		}
+	public synchronized void removeProjectile(Projectile proj) {
+		projectiles.remove(proj);
 	}
 }

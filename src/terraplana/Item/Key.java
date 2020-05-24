@@ -5,7 +5,7 @@
 
 package terraplana.Item;
 
-import terraplana.Actor.Player;
+import terraplana.Actor.Actor;
 
 public class Key extends Item{
 	private boolean pickup = true;
@@ -20,7 +20,7 @@ public class Key extends Item{
 	}
 
 	@Override
-	public boolean onPickup(Player player){
+	public boolean onPickup(Actor player){
 		pickup = true;
 		for(Item it : player.getInventory()){
 			if(it.getClass().equals(this.getClass())){
@@ -31,18 +31,18 @@ public class Key extends Item{
 	}
 
 	@Override
-	public boolean onPickedup(Player player){
+	public boolean onPickedup(Actor player){
 		return pickup;
 	}
 
 	@Override
-	public boolean onUse(Player player){
+	public boolean onUse(Actor player){
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean onUsed(Player player){
+	public boolean onUsed(Actor player){
 		// TODO Auto-generated method stub
 		return false;
 	}

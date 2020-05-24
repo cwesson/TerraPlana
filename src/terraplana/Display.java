@@ -90,8 +90,8 @@ public class Display extends JPanel implements KeyListener{
 			}
 		}
 		
-		int px = player.getTile().getBoard().getPosition(player).getX();
-		int py = player.getTile().getBoard().getPosition(player).getY();
+		int px = board.getPosition(player).getX();
+		int py = board.getPosition(player).getY();
 		int offx = (int)(DRAW_WIDTH/2.0-16);
 		int offy = (int)(DRAW_HEIGHT/2.0-16);
 		
@@ -189,16 +189,16 @@ public class Display extends JPanel implements KeyListener{
 			}
 		}
 		
-		// Draw foreground border.
-		foreground.setColor(Color.BLACK);
-		foreground.drawRect(0, 0, DRAW_WIDTH-1, DRAW_HEIGHT-1);
-		
 		// Draw the player.
 		{
 			Direction dir = player.getDirection();
 			Image img = icache.request("img/Player" + "-" + dir + ".png");
 			foreground.drawImage(img, offx, offy, this);
 		}
+		
+		// Draw foreground border.
+		foreground.setColor(Color.BLACK);
+		foreground.drawRect(0, 0, DRAW_WIDTH-1, DRAW_HEIGHT-1);
 
 		double centerX = getWidth()/2.0;
 		double centerY = getHeight()/2.0;
@@ -227,15 +227,19 @@ public class Display extends JPanel implements KeyListener{
 		{
 			uibuffer.setColor(Color.GRAY);
 			uibuffer.fill3DRect(uiCenterLeft, (int)(getHeight()-uiImgSize), uiWidth, uiImgSize,true);
-			uibuffer.fill3DRect(uiCenterLeft+2, getHeight()-uiImgSize+2, uiImgSize-5, uiImgSize-5, false);
-			uibuffer.setColor(Color.BLACK);
+			int selected = player.getSelected();
 			int count = 0;
 			for(Item it : player.getInventory()){
 				String type = it.getClass().getName();
 				type = type.substring(type.lastIndexOf(".")+1);
 				Image img = icache.request("img/Item/" + type + ".png");
+				if(selected == count){
+					uibuffer.setColor(Color.GRAY);
+					uibuffer.fill3DRect(uiCenterLeft+(count*uiImgSize)+2, getHeight()-uiImgSize+2, uiImgSize-5, uiImgSize-5, false);
+				}
 				uibuffer.drawImage(img, uiCenterLeft+(count*uiImgSize), getHeight()-uiImgSize, uiImgSize, uiImgSize, this);
 				if(it.getCount() > 1){
+					uibuffer.setColor(Color.BLACK);
 					uibuffer.drawString(it.getCount()+"", uiCenterLeft+(count*uiImgSize), getHeight()-2);
 				}
 				count++;
@@ -307,6 +311,39 @@ public class Display extends JPanel implements KeyListener{
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_D:
 				dir = Direction.EAST;
+				break;
+			case KeyEvent.VK_E:
+				player.useSelected();
+				break;
+			case KeyEvent.VK_1:
+				player.setSelected(0);
+				break;
+			case KeyEvent.VK_2:
+				player.setSelected(1);
+				break;
+			case KeyEvent.VK_3:
+				player.setSelected(2);
+				break;
+			case KeyEvent.VK_4:
+				player.setSelected(3);
+				break;
+			case KeyEvent.VK_5:
+				player.setSelected(4);
+				break;
+			case KeyEvent.VK_6:
+				player.setSelected(5);
+				break;
+			case KeyEvent.VK_7:
+				player.setSelected(6);
+				break;
+			case KeyEvent.VK_8:
+				player.setSelected(7);
+				break;
+			case KeyEvent.VK_9:
+				player.setSelected(8);
+				break;
+			case KeyEvent.VK_0:
+				player.setSelected(9);
 				break;
 		}
 		code = KeyEvent.VK_UNDEFINED;

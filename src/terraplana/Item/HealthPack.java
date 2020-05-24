@@ -5,7 +5,7 @@
 
 package terraplana.Item;
 
-import terraplana.Actor.Player;
+import terraplana.Actor.Actor;
 
 public class HealthPack extends Item{
 	protected int amount;
@@ -19,23 +19,23 @@ public class HealthPack extends Item{
 	}
 
 	@Override
-	public boolean onPickup(Player player){
+	public boolean onPickup(Actor player){
 		amount -= player.setHealth(amount);
 		return false;
 	}
 
 	@Override
-	public boolean onPickedup(Player player){
+	public boolean onPickedup(Actor player){
 		return !(amount > 0);
 	}
 
 	@Override
-	public boolean onUse(Player player){
+	public boolean onUse(Actor player){
 		return false;
 	}
 
 	@Override
-	public boolean onUsed(Player player){
+	public boolean onUsed(Actor player){
 		return false;
 	}
 

@@ -10,7 +10,7 @@ import java.util.List;
 
 import terraplana.Attributes;
 import terraplana.Position;
-import terraplana.Actor.Player;
+import terraplana.Actor.Actor;
 
 public abstract class Item implements Attributes{
 	protected List<String> attributes = new ArrayList<String>();
@@ -28,17 +28,17 @@ public abstract class Item implements Attributes{
 	 * @param player The Player.
 	 * @return true to add the Item to the Player's inventory.
 	 */
-	public abstract boolean onPickup(Player player);
+	public abstract boolean onPickup(Actor player);
 	
 	/**
 	 * Called after onPickup().
 	 * @param player The Player.
 	 * @return true to remove the Item from the Board.
 	 */
-	public abstract boolean onPickedup(Player player);
+	public abstract boolean onPickedup(Actor player);
 	
-	public abstract boolean onUse(Player player);
-	public abstract boolean onUsed(Player player);
+	public abstract boolean onUse(Actor player);
+	public abstract boolean onUsed(Actor player);
 	
 	public void setPosition(Position pos){
 		this.pos = pos;
@@ -58,6 +58,10 @@ public abstract class Item implements Attributes{
 	
 	public void decCount(){
 		count--;
+	}
+	
+	public void addCount(int num){
+		count += num;
 	}
 
 	@Override

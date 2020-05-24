@@ -1,5 +1,5 @@
 /**
- * @file Carabiner.java
+ * @file Key.java
  * @author Conlan Wesson
  */
 
@@ -7,34 +7,43 @@ package terraplana.Item;
 
 import terraplana.Actor.Actor;
 
-public class Carabiner extends Item{
-	private boolean pickup = true;
+public class Arrow extends Item{
+	protected int amount;
+	protected boolean add = true;
 	
-	public Carabiner(String[] args){
+	public Arrow(String[] args){
 		super(args);
-		attributes.add("movement.climb");
-		attributes.add("movement.climb.safe");
 	}
 
 	@Override
 	protected void parseArgs(String[] args){
-		// TODO Auto-generated method stub
+		amount = Integer.parseInt(args[0]);
 	}
 
 	@Override
 	public boolean onPickup(Actor player){
-		pickup = true;
 		for(Item it : player.getInventory()){
 			if(it.getClass().equals(this.getClass())){
-				pickup = false;
+				add = false;
+				break;
 			}
 		}
-		return pickup;
+		return add;
 	}
 
 	@Override
 	public boolean onPickedup(Actor player){
-		return pickup;
+		for(Item it : player.getInventory()){
+			if(it.getClass().equals(this.getClass())){
+				if(add){
+					it.addCount(amount-1);
+				}else {
+					it.incCount();
+				}
+				break;
+			}
+		}
+		return true;
 	}
 
 	@Override

@@ -49,6 +49,10 @@ public abstract class Projectile {
 	}
 	
 	public boolean onConflict(Actor act){
+		if(timer != null){
+			timer.cancel();
+			timer = null;
+		}
 		return true;
 	}
 	
@@ -71,12 +75,15 @@ public abstract class Projectile {
 
 		@Override
 		public void run(){
-			proj.getBoard().moveProjectile(proj, proj.getDirection());
-			--proj.range;
-			if(range == 0) {
+			if(proj.getBoard().moveProjectile(proj, proj.getDirection())){
+				--proj.range;
+				if(range == 0) {
+					this.cancel();
+					proj.onImpact();
+					proj.getBoard().removeProjectile(proj);
+				}
+			}else {
 				this.cancel();
-				proj.onImpact();
-				proj.getBoard().removeProjectile(proj);
 			}
 		}
 	}

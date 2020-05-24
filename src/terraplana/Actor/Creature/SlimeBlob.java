@@ -98,4 +98,8 @@ public class SlimeBlob extends Creature{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public String toString(){
+		return "SlimeBlob: (" + health + "%)";
+	}
 }

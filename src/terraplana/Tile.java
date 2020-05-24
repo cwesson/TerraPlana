@@ -31,42 +31,35 @@ public class Tile{
 		return board;
 	}
 	
-	public void addActor(Actor act){
-		synchronized(actors){
-			for(Actor other : actors){
-				other.onConflict(act);
-				act.onConflict(other);
-			}
-			actors.add(act);
+	public synchronized void addActor(Actor act){
+		for(Actor other : actors){
+			other.onConflict(act);
+			act.onConflict(other);
 		}
+		actors.add(act);
 	}
 	
-	public void removeActor(Actor act){
-		synchronized(actors){
-			actors.remove(act);
-		}
+	public synchronized void removeActor(Actor act){
+		actors.remove(act);
 	}
 	
-	public void addProjectile(Projectile proj){
-		synchronized(actors){
-			boolean done = false;
-			for(Actor other : actors){
-				other.onConflict(proj);
-				done = proj.onConflict(other);
-			}
-			if(done){
-				proj.onImpact();
-				board.removeProjectile(proj);
-			}else{
-				projectiles.add(proj);
-			}
+	public synchronized boolean addProjectile(Projectile proj) {
+		boolean done = false;
+		List<Actor> copy = new ArrayList<Actor>(actors);
+		for(Actor other : copy){
+			other.onConflict(proj);
+			done = proj.onConflict(other);
 		}
+		if(done){
+			board.removeProjectile(proj);
+		}else{
+			projectiles.add(proj);
+		}
+		return !done;
 	}
 	
-	public void removeProjectile(Projectile proj){
-		synchronized(actors){
-			projectiles.remove(proj);
-		}
+	public synchronized void removeProjectile(Projectile proj){
+		projectiles.remove(proj);
 	}
 	
 	public void addItem(Item it){

@@ -26,6 +26,7 @@ public abstract class Actor implements Attributes{
 
 	protected List<String> attributes = new ArrayList<String>();
 	protected List<Item> inventory = new ArrayList<Item>();
+	protected int selected = 0;
 	protected Tile tile = null;
 	protected Direction direction = Direction.EAST;
 	protected int health = 100;
@@ -77,6 +78,7 @@ public abstract class Actor implements Attributes{
 			if(lives <= 0){
 				status = Status.STATUS_DEAD;
 				Debug.info("Status = " + status);
+				tile.getBoard().removeActor(this);
 			}else{
 				status = Status.STATUS_OK;
 			}
@@ -142,6 +144,33 @@ public abstract class Actor implements Attributes{
 	public boolean removeItem(Item it){
 		inventory.remove(it);
 		return true;
+	}
+	
+	private Item getSelectedItem(){
+		if(inventory.size() > selected){
+			return inventory.get(selected);
+		}else{
+			return null;
+		}
+	}
+	
+	public int getSelected(){
+		return selected;
+	}
+	
+	public void setSelected(int sel){
+		if(sel >= 0){
+			selected = sel;
+		}
+	}
+	
+	public void useSelected(){
+		Item it = getSelectedItem();
+		if(it != null){
+			if(it.onUse(this)){
+				it.onUsed(this);
+			}
+		}
 	}
 	
 	public boolean hasAttribute(String attr){
