@@ -6,7 +6,9 @@
 package terraplana.Actor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,19 +26,22 @@ public abstract class Actor implements Attributes{
 		STATUS_DONE
 	};
 
-	protected List<String> attributes = new ArrayList<String>();
+	protected Map<String, Integer> attributes = new HashMap<String, Integer>();
 	protected List<Item> inventory = new ArrayList<Item>();
 	protected int selected = 0;
 	protected Tile tile = null;
 	protected Direction direction = Direction.EAST;
-	protected int health = 100;
-	protected int lives = 1;
 	protected boolean input = true;
 	protected Status status = Status.STATUS_OK;
 	private ActorTimer timer;
 
 	public abstract void onConflict(Actor act);
 	public abstract void onConflict(Projectile proj);
+	
+	protected Actor(){
+		attributes.put("health", 100);
+		attributes.put("lives", 1);
+	}
 	
 	protected void setInterval(int time){
 		if(timer != null){
@@ -61,21 +66,21 @@ public abstract class Actor implements Attributes{
 	}
 	
 	public int getHealth(){
-		return health;
+		return getAttribute("health");
 	}
 	
 	public int setHealth(int amount){
-		int prev = health;
+		int health = getAttribute("health");
 		if(status != Status.STATUS_DONE){
 			health += amount;
 			if(health > 100){
 				health = 100;
 			}else if(health <= 0){
 				health = 0;
-				lives--;
+				setAttribute("lives", -1);
 			}
 			Debug.info(this.toString());
-			if(lives <= 0){
+			if(getAttribute("lives") <= 0){
 				status = Status.STATUS_DEAD;
 				Debug.info("Status = " + status);
 				tile.getBoard().removeActor(this);
@@ -83,11 +88,12 @@ public abstract class Actor implements Attributes{
 				status = Status.STATUS_OK;
 			}
 		}
-		return health - prev;
+		attributes.put("health", health);
+		return health;
 	}
 	
 	public int getLives(){
-		return lives;
+		return getAttribute("lives");
 	}
 
 	public void allowInput(){
@@ -174,7 +180,7 @@ public abstract class Actor implements Attributes{
 	}
 	
 	public boolean hasAttribute(String attr){
-		if(attributes.contains(attr)){
+		if(attributes.containsKey(attr)){
 			return true;
 		}
 		for(Item it : inventory){
@@ -183,6 +189,16 @@ public abstract class Actor implements Attributes{
 			}
 		}
 		return false;
+	}
+	
+	public void setAttribute(String attr, int inc){
+		int value = attributes.get(attr);
+		value += inc;
+		attributes.put(attr, value);
+	}
+	
+	public int getAttribute(String attr){
+		return attributes.get(attr);
 	}
 
 	@Override

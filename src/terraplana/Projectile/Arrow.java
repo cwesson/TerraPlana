@@ -1,3 +1,8 @@
+/**
+ * @file Arrow.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Projectile;
 
 import terraplana.Board;

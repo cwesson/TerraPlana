@@ -32,7 +32,7 @@ public abstract class Creature extends Actor{
 
 	@Override
 	public boolean hasAttribute(String attr){
-		if(attributes.contains(attr)){
+		if(attributes.containsKey(attr)){
 			return true;
 		}
 		return false;

@@ -16,9 +16,9 @@ public class Fish extends Creature{
 	
 	public Fish(String[] args){
 		super(args);
-		attributes.add("movement.swim");
-		attributes.add("movement.swim.safe");
-		attributes.add("creature.peaceful");
+		attributes.put("movement.swim", 1);
+		attributes.put("movement.swim.safe", 1);
+		attributes.put("creature.peaceful", 1);
 		setInterval(400);
 	}
 	

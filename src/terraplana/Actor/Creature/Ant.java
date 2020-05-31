@@ -13,7 +13,7 @@ public class Ant extends Creature{
 	
 	public Ant(String[] args){
 		super(args);
-		attributes.add("movement.walk");
+		attributes.put("movement.walk", 1);
 		setInterval(200);
 	}
 	

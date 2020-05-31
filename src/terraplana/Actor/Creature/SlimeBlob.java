@@ -16,7 +16,7 @@ public class SlimeBlob extends Creature{
 	
 	public SlimeBlob(String[] args){
 		super(args);
-		attributes.add("movement.walk");
+		attributes.put("movement.walk", 1);
 		setInterval(500);
 	}
 	
@@ -100,6 +100,6 @@ public class SlimeBlob extends Creature{
 	}
 	
 	public String toString(){
-		return "SlimeBlob: (" + health + "%)";
+		return "SlimeBlob: (" + getHealth() + "%)";
 	}
 }

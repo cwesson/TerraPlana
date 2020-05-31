@@ -383,9 +383,9 @@ public class Board{
 
 	public synchronized void removeActor(Actor act) {
 		Position pos = actors.get(act);
-		actors.remove(act);
-		at(pos).removeActor(act);
 		if(!act.isPlayer()){
+			actors.remove(act);
+			at(pos).removeActor(act);
 			creatures.remove(act);
 		}
 	}

@@ -17,9 +17,9 @@ public class Player extends Actor{
 	private Display display;
 	
 	public Player(String name){
-		attributes.add("movement.walk");
-		attributes.add("movement.swim");
-		attributes.add("movement.skate");
+		attributes.put("movement.walk", 1);
+		attributes.put("movement.swim", 1);
+		attributes.put("movement.skate", 1);
 		id = sequence;
 		sequence++;
 		this.name = name;
@@ -31,7 +31,7 @@ public class Player extends Actor{
 	}
 	
 	public String toString(){
-		return "Player" + id + ": " + name + " (" + health + "%)";
+		return "Player" + id + ": " + name + " (" + getHealth() + "%)";
 	}
 	
 	public void setDisplay(Display dis){

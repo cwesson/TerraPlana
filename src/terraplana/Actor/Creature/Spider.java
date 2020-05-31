@@ -13,9 +13,9 @@ public class Spider extends Creature{
 	
 	public Spider(String[] args){
 		super(args);
-		attributes.add("movement.walk");
-		attributes.add("movement.climb");
-		attributes.add("movement.climb.safe");
+		attributes.put("movement.walk", 1);
+		attributes.put("movement.climb", 1);
+		attributes.put("movement.climb.safe", 1);
 		setInterval(200);
 	}
 	
