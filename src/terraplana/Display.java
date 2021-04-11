@@ -40,6 +40,7 @@ public class Display extends JPanel implements KeyListener{
 	protected Direction direction = Direction.NONE;
 	protected int code = KeyEvent.VK_UNDEFINED;
 	private ImageCache icache = ImageCache.getInstance();
+	private ContentLoader loader = ContentLoader.getInstance();
 	
 	public Display(Player player) throws Exception{
 		this(player, null);
@@ -65,33 +66,12 @@ public class Display extends JPanel implements KeyListener{
 		new DisplayTimer();
 	}
 	
-	@Override
-	public void paint(Graphics graph){
-		Board board = player.getTile().getBoard();
-		
-		Image offscreen = createImage(getWidth(), getHeight());
-		Graphics buffer = offscreen.getGraphics();
-		
-		BufferedImage uiscreen = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics uibuffer = uiscreen.getGraphics();
-		
-		BufferedImage fgscreen = new BufferedImage(DRAW_WIDTH, DRAW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+	BufferedImage drawBoard(Board board, BufferedImage fgscreen){
 		Graphics foreground = fgscreen.getGraphics();
 		
-		Actor.Status status = player.getStatus();
-		
-		// Draw background image.
-		{
-			Image bg = icache.request("img/background.jpg");
-			for(int i = 0; i < getHeight(); i+= bg.getHeight(this)){
-				for(int j = 0; j < getWidth(); j += bg.getWidth(this)){
-					buffer.drawImage(bg, j, i, this);
-				}
-			}
-		}
-		
-		int px = board.getPosition(player).getX();
-		int py = board.getPosition(player).getY();
+		Position pos = board.getPosition(player);
+		int px = pos.getX();
+		int py = pos.getY();
 		int offx = (int)(DRAW_WIDTH/2.0-16);
 		int offy = (int)(DRAW_HEIGHT/2.0-16);
 		
@@ -110,15 +90,13 @@ public class Display extends JPanel implements KeyListener{
 							}
 							// Draw terrain.
 							String type = terra.getClass().getName();
-							type = type.substring(type.lastIndexOf(".")+1);
-							Image img = icache.request("img/Terrain/" + type + ".png");
+							Image img = loader.getImage(type);
 							foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
 							
 							// Draw Landscape.
 							if(scape != null){
 								type = scape.getClass().getName();
-								type = type.substring(type.lastIndexOf(".")+1);
-								img = icache.request("img/Landscape/" + type + ".png");
+								img = loader.getImage(type);
 								foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
 							}
 						}
@@ -126,8 +104,7 @@ public class Display extends JPanel implements KeyListener{
 						// Draw items.
 						for(Item it : cell.getItems()){
 							String type = it.getClass().getName();
-							type = type.substring(type.lastIndexOf(".")+1);
-							Image img = icache.request("img/Item/" + type + ".png");
+							Image img = loader.getImage(type);
 							foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
 							if(it.getCount() > 1){
 								foreground.drawString(it.getCount()+"", ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy);
@@ -138,8 +115,7 @@ public class Display extends JPanel implements KeyListener{
 						if(cell.hasMovable()){
 							Movable mv = cell.getMovable();
 							String type = mv.getClass().getName();
-							type = type.substring(type.lastIndexOf(".")+1);
-							Image img = icache.request("img/Movable/" + type + ".png");
+							Image img = loader.getImage(type);
 							foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
 						}
 					}
@@ -167,11 +143,10 @@ public class Display extends JPanel implements KeyListener{
 		{
 			for(Creature creature : board.getCreatures()){
 				String type = creature.getClass().getName();
-				type = type.substring(type.lastIndexOf(".")+1);
 				int ix = creature.getTile().getBoard().getPosition(creature).getX();
 				int iy = creature.getTile().getBoard().getPosition(creature).getY();
 				Direction dir = creature.getDirection();
-				Image img = icache.request("img/Creature/" + type + "-" + dir + ".png");
+				Image img = loader.getImage(type, dir);
 				foreground.drawImage(img, ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy, this);
 			}
 		}
@@ -180,11 +155,10 @@ public class Display extends JPanel implements KeyListener{
 		{
 			for(Projectile proj : board.getProjectiles().keySet()) {
 				String type = proj.getClass().getName();
-				type = type.substring(type.lastIndexOf(".")+1);
 				int ix = board.getPosition(proj).getX();
 				int iy = board.getPosition(proj).getY();
 				Direction dir = proj.getDirection();
-				Image img = icache.request("img/Projectile/" + type + "-" + dir + ".png");
+				Image img = loader.getImage(type, dir);
 				foreground.drawImage(img, ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy, this);
 			}
 		}
@@ -199,6 +173,34 @@ public class Display extends JPanel implements KeyListener{
 		// Draw foreground border.
 		foreground.setColor(Color.BLACK);
 		foreground.drawRect(0, 0, DRAW_WIDTH-1, DRAW_HEIGHT-1);
+		
+		return fgscreen;
+	}
+	
+	@Override
+	public void paint(Graphics graph){
+		Board board = player.getTile().getBoard();
+		
+		Image offscreen = createImage(getWidth(), getHeight());
+		Graphics buffer = offscreen.getGraphics();
+		
+		BufferedImage uiscreen = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics uibuffer = uiscreen.getGraphics();
+		
+		BufferedImage fgscreen = new BufferedImage(DRAW_WIDTH, DRAW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		if(board != null) {
+			drawBoard(board, fgscreen);
+		}
+		
+		// Draw background image.
+		{
+			Image bg = icache.request("img/background.jpg");
+			for(int i = 0; i < getHeight(); i+= bg.getHeight(this)){
+				for(int j = 0; j < getWidth(); j += bg.getWidth(this)){
+					buffer.drawImage(bg, j, i, this);
+				}
+			}
+		}
 
 		double centerX = getWidth()/2.0;
 		double centerY = getHeight()/2.0;
@@ -231,8 +233,7 @@ public class Display extends JPanel implements KeyListener{
 			int count = 0;
 			for(Item it : player.getInventory()){
 				String type = it.getClass().getName();
-				type = type.substring(type.lastIndexOf(".")+1);
-				Image img = icache.request("img/Item/" + type + ".png");
+				Image img = loader.getImage(type);
 				if(selected == count){
 					uibuffer.setColor(Color.GRAY);
 					uibuffer.fill3DRect(uiCenterLeft+(count*uiImgSize)+2, getHeight()-uiImgSize+2, uiImgSize-5, uiImgSize-5, false);
@@ -245,7 +246,8 @@ public class Display extends JPanel implements KeyListener{
 				count++;
 			}
 		}
-		
+
+		Actor.Status status = player.getStatus();
 		// Draw message box.
 		if(status != Player.Status.STATUS_OK){
 			uibuffer.setColor(Color.GRAY);

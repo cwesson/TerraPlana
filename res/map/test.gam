@@ -1,6 +1,8 @@
 title Demo Game
 desc Short game to demo the engine.
 level skills.map
+level portal.map
+level thebelt.map
 level test1.map peaceful
 level test2.map icicle
 level test3.map ifoundnemo

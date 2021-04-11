@@ -8,7 +8,6 @@ package terraplana;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +28,7 @@ public class Board{
 	private List<ArrayList<Tile>> map = new ArrayList<ArrayList<Tile>>();
 	private List<Player> players = new ArrayList<Player>();
 	private Map<Actor, Position> actors = new HashMap<Actor, Position>();
+	private Map<Actor, Position> removed = new HashMap<Actor, Position>();
 	private List<Creature> creatures = new ArrayList<Creature>();
 	private Map<Character, String> terrainmap = new HashMap<Character, String>();
 	private Map<Projectile, Position> projectiles = new HashMap<Projectile, Position>();
@@ -78,6 +78,8 @@ public class Board{
 				parseCreature(cmd);
 			}else if(cmd[0].equals("landscape")){
 				parseLandscape(cmd);
+			}else if(cmd[0].equals("mod")){
+				parseLandscape(cmd);
 			}
 		}
 	}
@@ -109,6 +111,7 @@ public class Board{
 				parseMap(in);
 			}else if(cmd[0].equals("include")){
 				String path = parent;
+				Debug.info("Include " + cmd[1]);
 				if(local){
 					parseFile(getClass().getResourceAsStream("/"+path + "/" + cmd[1]), parent);
 				}else{
@@ -118,6 +121,9 @@ public class Board{
 				title = String.join(" ", Arrays.copyOfRange(cmd, 1, cmd.length));
 			}else if(cmd[0].equals("desc")){
 				desc = String.join(" ", Arrays.copyOfRange(cmd, 1, cmd.length));
+			}else if(cmd[0].equals("mod")){
+				ContentLoader.getInstance().addMod(cmd[1]);
+				Debug.info("Loaded mod " + cmd[1]);
 			}else{
 				Debug.info("Unknown map command " + cmd[0]);
 			}
@@ -125,13 +131,15 @@ public class Board{
 	}
 
 	private void parseCreature(String[] cmd) throws Exception{
+		// Item type
 		String type = cmd[1];
+		// Item position
 		String[] args = new String[cmd.length-4];
+
+		// Item specific
 		System.arraycopy(cmd, 4, args, 0, cmd.length-4);
-		Class<?> cls = Class.forName("terraplana.Actor.Creature." + type);
-		Constructor<?> con = cls.getConstructor(args.getClass());
-		Creature creature = (Creature)con.newInstance((Object)args);
 		Position pos = new Position(Integer.parseInt(cmd[2]), Integer.parseInt(cmd[3]));
+		Creature creature = ContentLoader.getInstance().loadCreature(type, args);
 		
 		Debug.info("Creature " + type);
 		creature.setTile(this.at(pos));
@@ -148,9 +156,7 @@ public class Board{
 		// Item specific
 		String[] args = new String[cmd.length-4];
 		System.arraycopy(cmd, 4, args, 0, cmd.length-4);
-		Class<?> cls = Class.forName("terraplana.Item." + type);
-		Constructor<?> con = cls.getConstructor(args.getClass());
-		Item item = (Item)con.newInstance((Object)args);
+		Item item = ContentLoader.getInstance().loadItem(type, args);
 		item.setPosition(pos);
 
 		Debug.info("Item " + type);
@@ -166,9 +172,7 @@ public class Board{
 		// Item specific
 		String[] args = new String[cmd.length-4];
 		System.arraycopy(cmd, 4, args, 0, cmd.length-4);
-		Class<?> cls = Class.forName("terraplana.Movable." + type);
-		Constructor<?> con = cls.getConstructor(args.getClass());
-		Movable mv = (Movable)con.newInstance((Object)args);
+		Movable mv = ContentLoader.getInstance().loadMovable(type, args);
 
 		Debug.info("Movable " + type);
 		at(pos).addMovable(mv);
@@ -183,9 +187,7 @@ public class Board{
 		// Landscape specific
 		String[] args = new String[cmd.length-4];
 		System.arraycopy(cmd, 4, args, 0, cmd.length-4);
-		Class<?> cls = Class.forName("terraplana.Terrain.Landscape." + type);
-		Constructor<?> con = cls.getConstructor(Tile.class, args.getClass());
-		Landscape scape = (Landscape)con.newInstance(at(pos), args);
+		Landscape scape = ContentLoader.getInstance().loadLandscape(type, args, at(pos));
 		
 		Debug.info("Landscape " + type);
 		at(pos).setTerrain(scape);
@@ -202,14 +204,8 @@ public class Board{
 				String type = terrainmap.get(c);
 				Tile cell = new Tile(this, terr);
 				if(c != null){
-					try {
-						Class<?> cls = Class.forName("terraplana.Terrain." + type);
-						Constructor<?> con = cls.getConstructor(Tile.class);
-						terr = (Terrain)con.newInstance(cell);
-						cell.setTerrain(terr);
-					}catch(Exception e) {
-						Debug.error("No terrain for \"" + c + "\"");
-					}
+					terr = ContentLoader.getInstance().loadTerrain(type, cell);
+					cell.setTerrain(terr);
 				}
 				row.add(cell);
 			}
@@ -219,7 +215,7 @@ public class Board{
 	private void parseTerrain(String[] cmd){
 		String type = cmd[1];
 		String cell = cmd[2];
-		terrainmap.put(new Character(cell.charAt(0)), type);
+		terrainmap.put(Character.valueOf(cell.charAt(0)), type);
 	}
 
 	public void addPlayer(Player player){
@@ -383,16 +379,17 @@ public class Board{
 
 	public synchronized void removeActor(Actor act) {
 		Position pos = actors.get(act);
-		if(!act.isPlayer()){
-			actors.remove(act);
-			at(pos).removeActor(act);
-			creatures.remove(act);
-		}
+		actors.remove(act);
+		at(pos).removeActor(act);
+		creatures.remove(act);
+		removed.put(act, pos);
 	}
 
 	public synchronized Position getPosition(Actor player){
 		if(actors.containsKey(player)){
 			return actors.get(player).clone();
+		}else if(removed.containsKey(player)){
+			return removed.get(player).clone();
 		}else{
 			return null;
 		}
