@@ -11,13 +11,12 @@ import terraplana.Position;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Projectile.Projectile;
-import terraplana.Terrain.Landscape.Landscape;
-import terraplana.mod.portal.Terrain.Landscape.Portal;
+import terraplana.mod.portal.PortalManager;
 
 public abstract class PortalShot extends Projectile {
 	protected PortalShot(Board brd, Direction dir){
 		super(brd, dir);
-		setInterval(100);
+		setInterval(30);
 		setRange(15);
 	}
 	
@@ -38,8 +37,14 @@ public abstract class PortalShot extends Projectile {
 		super.onImpact();
 		Position pos = board.getPosition(this);
 		Tile tile = board.at(pos);
-		Landscape port = Portal.factory(tile, pos, this.getColor());
-		tile.setTerrain(port);
+		if(tile.hasAttribute("portal.portalable")) {
+			String color = this.getColor();
+			if(color.equals("Blue")) {
+				PortalManager.getInstance().setBlue(tile, pos);
+			}else{
+				PortalManager.getInstance().setOrange(tile, pos);
+			}
+		}
 		return true;
 	}
 

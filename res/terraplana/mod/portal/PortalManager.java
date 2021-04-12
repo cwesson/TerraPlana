@@ -5,11 +5,12 @@
 
 package terraplana.mod.portal;
 
+import terraplana.Debug;
 import terraplana.Position;
 import terraplana.Tile;
 import terraplana.Terrain.Terrain;
+import terraplana.mod.portal.Terrain.Landscape.Portal;
 import terraplana.mod.portal.Terrain.Landscape.PortalBlue;
-import terraplana.mod.portal.Terrain.Landscape.PortalOrange;
 
 public class PortalManager {
 	private static PortalManager inst = null;
@@ -30,30 +31,55 @@ public class PortalManager {
 		return inst;
 	}
 	
+	private void clearTile(Tile tile) {
+		Terrain terra = tile.getTerrain();
+		if(Portal.class.isAssignableFrom(terra.getClass())){
+			if(PortalBlue.class.isAssignableFrom(terra.getClass())){
+				blueTile = null;
+				bluePos = null;
+			}else{
+				orangeTile = null;
+				orangePos = null;
+			}
+			Portal scape = (Portal)terra;
+			terra = scape.getTerrain();
+			tile.setTerrain(terra);
+		}
+	}
+	
 	public void setBlue(Tile tile, Position pos) {
+		clearTile(tile);
 		if(blueTile != null) {
 			Terrain terra = blueTile.getTerrain();
-			if(PortalBlue.class.isAssignableFrom(terra.getClass())){
-				PortalBlue scape = (PortalBlue)terra;
+			if(Portal.class.isAssignableFrom(terra.getClass())){
+				Portal scape = (Portal)terra;
 				terra = scape.getTerrain();
 				blueTile.setTerrain(terra);
+				Debug.info("cleared blue");
 			}
 		}
 		blueTile = tile;
 		bluePos = pos.clone();
+		tile.setTerrain(Portal.factory(tile, pos, "Blue"));
+		Debug.info("Blue at " + bluePos);
 	}
 	
 	public void setOrange(Tile tile, Position pos) {
+		clearTile(tile);
 		if(orangeTile != null) {
 			Terrain terra = orangeTile.getTerrain();
-			if(PortalOrange.class.isAssignableFrom(terra.getClass())){
-				PortalOrange scape = (PortalOrange)terra;
+			Debug.info("orange tile "+ terra.getClass().getName());
+			if(Portal.class.isAssignableFrom(terra.getClass())){
+				Portal scape = (Portal)terra;
 				terra = scape.getTerrain();
 				orangeTile.setTerrain(terra);
+				Debug.info("cleared orange");
 			}
 		}
 		orangeTile = tile;
 		orangePos = pos.clone();
+		tile.setTerrain(Portal.factory(tile, pos, "Orange"));
+		Debug.info("Orange at " + orangePos);
 	}
 	
 	public Position getBlue() {

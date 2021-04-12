@@ -25,16 +25,21 @@ public abstract class Portal extends Landscape {
 		}
 		return port;
 	}
-
-	protected Portal(Tile place, Position pos) {
+	
+	public Portal(Tile place, String[] args) {
 		super(place);
 		manager = PortalManager.getInstance();
-		String color = this.getColor();
-		if(color.equals("Blue")) {
+		Position pos = new Position(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+		if(this.getColor().equals("Blue")) {
 			manager.setBlue(place, pos);
 		}else{
 			manager.setOrange(place, pos);
 		}
+	}
+
+	protected Portal(Tile place, Position pos) {
+		super(place);
+		manager = PortalManager.getInstance();
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ public class Portalable extends Terrain {
 	public Portalable(Tile place){
 		super(place);
 		attributes.add("movement.walk");
+		attributes.add("portal.portalable");
 	}
 
 	@Override

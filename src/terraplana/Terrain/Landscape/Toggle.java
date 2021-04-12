@@ -30,7 +30,7 @@ public class Toggle extends Landscape {
 		tile.setTerrain(new TogglePressed(tile, td));
 	}
 	
-	private void swapDoor(){
+	protected void swapDoor(){
 		Tile cell = tile.getBoard().at(td);
 		Terrain door = cell.getTerrain();
 		if(Trapdoor.class.isAssignableFrom(door.getClass())){
