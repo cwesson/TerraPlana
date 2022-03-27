@@ -25,7 +25,6 @@ public class Spawner extends Landscape {
 	private String type;
 	private String[] spawnArgs;
 	private Creature spawn = null;
-	@SuppressWarnings("unused")
 	private SpawnerTimer timer;
 	
 	public Spawner (Tile place, String[] args) {

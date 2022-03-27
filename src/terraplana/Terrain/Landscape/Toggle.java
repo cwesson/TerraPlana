@@ -14,10 +14,14 @@ import terraplana.Terrain.Terrain;
 
 public class Toggle extends Landscape {
 	protected Position td;
+	protected int state = 0;
 
 	public Toggle(Tile place, String[] args) {
 		super(place);
 		td = new Position(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+		if(args.length > 2) {
+			state = Integer.parseInt(args[2]);
+		}
 	}
 	
 	public Toggle(Tile place, Position td) {
@@ -26,23 +30,15 @@ public class Toggle extends Landscape {
 	}
 	
 	protected void swapButton() {
-		tile.setTerrain(getTerrain());
-		tile.setTerrain(new TogglePressed(tile, td));
+		state = 1-state;
 	}
 	
 	protected void swapDoor(){
 		Tile cell = tile.getBoard().at(td);
-		Terrain door = cell.getTerrain();
-		if(Door.class.isAssignableFrom(door.getClass())){
-			Landscape scape = (Door)door;
-			Terrain terra = scape.getTerrain();
-			cell.setTerrain(terra);
-			cell.setTerrain(new DoorOpen(cell));
-		}else if(DoorOpen.class.isAssignableFrom(door.getClass())){
-			Landscape scape = (DoorOpen)door;
-			Terrain terra = scape.getTerrain();
-			cell.setTerrain(terra);
-			cell.setTerrain(new Door(cell));
+		Terrain terr = cell.getTerrain();
+		if(Door.class.isAssignableFrom(terr.getClass())){
+			Door door = (Door)terr;
+			door.activate();
 		}
 		swapButton();
 	}
@@ -71,4 +67,8 @@ public class Toggle extends Landscape {
 		return true;
 	}
 
+	@Override
+	public int spriteX(){
+		return state;
+	}
 }

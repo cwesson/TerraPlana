@@ -4,10 +4,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import terraplana.Board;
+import terraplana.ContentLoader;
 import terraplana.Direction;
+import terraplana.Sprite;
 import terraplana.Actor.Actor;
 
-public abstract class Projectile {
+public abstract class Projectile implements Sprite {
 	protected Direction direction = Direction.NONE;
 	protected Board board = null;
 	private ProjectileTimer timer = null;
@@ -62,6 +64,31 @@ public abstract class Projectile {
 			timer.cancel();
 			timer = null;
 		}
+	}
+
+	@Override
+	public int spriteWidth(){
+		return SPRITE_SIZE;
+	}
+
+	@Override
+	public int spriteHeight(){
+		return SPRITE_SIZE;
+	}
+
+	@Override
+	public int spriteX(){
+		return 0;
+	}
+
+	@Override
+	public int spriteY(){
+		return direction.index();
+	}
+	
+	@Override
+	public String spritePath(){
+		return ContentLoader.getInstance().imagePath(this.getClass().getName());
 	}
 	
 	private class ProjectileTimer extends TimerTask{

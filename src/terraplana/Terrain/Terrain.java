@@ -9,13 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import terraplana.Attributes;
+import terraplana.ContentLoader;
 import terraplana.Direction;
+import terraplana.Sprite;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
 import terraplana.Projectile.Projectile;
 
-public abstract class Terrain implements Attributes{
+public abstract class Terrain implements Attributes, Sprite{
 	private static class Sky extends Terrain {
 		public Sky() {
 			super(null);
@@ -161,5 +163,30 @@ public abstract class Terrain implements Attributes{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public int spriteWidth(){
+		return SPRITE_SIZE;
+	}
+
+	@Override
+	public int spriteHeight(){
+		return SPRITE_SIZE;
+	}
+
+	@Override
+	public int spriteX(){
+		return 0;
+	}
+
+	@Override
+	public int spriteY(){
+		return 0;
+	}
+	
+	@Override
+	public String spritePath(){
+		return ContentLoader.getInstance().imagePath(this.getClass().getName());
 	}
 }

@@ -10,7 +10,7 @@ item Carabiner 5 13
 item Key 10 10
 item FlipFlops 1 15
 item Balloon 10 14
-landscape Cactus 4 16
+landscape Cactus 7 16
 landscape Gate 13 21 1
 landscape Teleport 9 18 2 18
 landscape Toggle 9 19 2 21
@@ -38,7 +38,7 @@ map
 #++++++%%++++++#
 #++++++%%++++++#
 #++++++%%++++++#
-#.............+#
+#........&&&&&&#
 #++++++~~++++++#
 #++++++~~++++++#
 #++++++~~++++++#

@@ -84,7 +84,7 @@ public class ContentLoader {
 		return scape;
 	}
 	
-	private String parseType(String type) {
+	public String imagePath(String type) {
 		String path = "img";
 		String[] parts = type.split("[.]");
 		int i = 0;
@@ -120,13 +120,13 @@ public class ContentLoader {
 	}
 	
 	public Image getImage(String type) {
-		Image img = icache.request(parseType(type));
+		Image img = icache.request(imagePath(type));
 		return img;
 	}
 	
 	public Image getImage(String type, Direction dir) {
 		type += "-" + dir;
-		Image img = icache.request(parseType(type));
+		Image img = icache.request(imagePath(type));
 		return img;
 	}
 }

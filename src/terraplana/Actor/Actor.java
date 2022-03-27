@@ -13,13 +13,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import terraplana.Attributes;
+import terraplana.ContentLoader;
 import terraplana.Debug;
 import terraplana.Direction;
+import terraplana.Sprite;
 import terraplana.Tile;
 import terraplana.Item.Item;
 import terraplana.Projectile.Projectile;
 
-public abstract class Actor implements Attributes{
+public abstract class Actor implements Attributes, Sprite{
 	public enum Status {
 		STATUS_OK,
 		STATUS_DEAD,
@@ -213,6 +215,31 @@ public abstract class Actor implements Attributes{
 	
 	protected boolean onStopped(){
 		return false;
+	}
+
+	@Override
+	public int spriteWidth(){
+		return SPRITE_SIZE;
+	}
+
+	@Override
+	public int spriteHeight(){
+		return SPRITE_SIZE;
+	}
+
+	@Override
+	public int spriteX(){
+		return 0;
+	}
+
+	@Override
+	public int spriteY(){
+		return direction.index();
+	}
+	
+	@Override
+	public String spritePath(){
+		return ContentLoader.getInstance().imagePath(this.getClass().getName());
 	}
 	
 	private class ActorTimer extends TimerTask{

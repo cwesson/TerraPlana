@@ -69,4 +69,13 @@ public class ImageCache{
 		BufferedImage img = (BufferedImage)request(file);
 		return img.getSubimage(x*width, y*height, width, height);
 	}
+	
+	/**
+	 * Request an image from the cache.
+	 * @param file The image to retrieve.
+	 * @return The cached image.
+	 */
+	public Image request(Sprite sprite){
+		return request(sprite.spritePath(), sprite.spriteX(), sprite.spriteY(), sprite.spriteWidth(), sprite.spriteHeight());
+	}
 }

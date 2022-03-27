@@ -88,14 +88,12 @@ public class Display extends JPanel implements KeyListener{
 								terra = scape.getTerrain();
 							}
 							// Draw terrain.
-							String type = terra.getClass().getName();
-							Image img = loader.getImage(type);
+							Image img = icache.request((Sprite)terra);
 							foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
 							
 							// Draw Landscape.
 							if(scape != null){
-								type = scape.getClass().getName();
-								img = loader.getImage(type);
+								img = icache.request((Sprite)scape);
 								foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
 							}
 						}
@@ -141,11 +139,9 @@ public class Display extends JPanel implements KeyListener{
 		// Draw creatures.
 		synchronized(board){
 			for(Creature creature : board.getCreatures()){
-				String type = creature.getClass().getName();
 				int ix = creature.getTile().getBoard().getPosition(creature).getX();
 				int iy = creature.getTile().getBoard().getPosition(creature).getY();
-				Direction dir = creature.getDirection();
-				Image img = loader.getImage(type, dir);
+				Image img = icache.request((Sprite)creature);
 				foreground.drawImage(img, ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy, this);
 			}
 		}
@@ -153,19 +149,16 @@ public class Display extends JPanel implements KeyListener{
 		// Draw Projectiles.
 		{
 			for(Projectile proj : board.getProjectiles().keySet()) {
-				String type = proj.getClass().getName();
 				int ix = board.getPosition(proj).getX();
 				int iy = board.getPosition(proj).getY();
-				Direction dir = proj.getDirection();
-				Image img = loader.getImage(type, dir);
+				Image img = icache.request((Sprite)proj);
 				foreground.drawImage(img, ((ix-px)*IMG_SIZE)+offx, ((iy-py)*IMG_SIZE)+offy, this);
 			}
 		}
 		
 		// Draw the player.
 		{
-			int index = player.getDirection().index();
-			Image img = icache.request("img/Player.png", 0, index, IMG_SIZE, IMG_SIZE);
+			Image img = icache.request((Sprite)player);
 			foreground.drawImage(img, offx, offy, this);
 		}
 		

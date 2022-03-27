@@ -13,6 +13,7 @@ import terraplana.Actor.Actor;
 public class Fish extends Creature{
 	private int count = 0;
 	private int conflict = 0;
+	private int state = 0;
 	
 	public Fish(String[] args){
 		super(args);
@@ -68,6 +69,7 @@ public class Fish extends Creature{
 			count = 0;
 			conflict = 0;
 		}
+		state = 1-state;
 		return direction;
 	}
 	
@@ -83,5 +85,10 @@ public class Fish extends Creature{
 	public void onConflict(Actor act){
 		conflict = 6;
 		setInterval(100);
+	}
+
+	@Override
+	public int spriteX(){
+		return state;
 	}
 }
