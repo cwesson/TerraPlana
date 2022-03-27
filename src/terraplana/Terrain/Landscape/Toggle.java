@@ -33,16 +33,16 @@ public class Toggle extends Landscape {
 	protected void swapDoor(){
 		Tile cell = tile.getBoard().at(td);
 		Terrain door = cell.getTerrain();
-		if(Trapdoor.class.isAssignableFrom(door.getClass())){
-			Landscape scape = (Trapdoor)door;
+		if(Door.class.isAssignableFrom(door.getClass())){
+			Landscape scape = (Door)door;
 			Terrain terra = scape.getTerrain();
 			cell.setTerrain(terra);
-			cell.setTerrain(new TrapdoorOpen(cell));
-		}else if(TrapdoorOpen.class.isAssignableFrom(door.getClass())){
-			Landscape scape = (TrapdoorOpen)door;
+			cell.setTerrain(new DoorOpen(cell));
+		}else if(DoorOpen.class.isAssignableFrom(door.getClass())){
+			Landscape scape = (DoorOpen)door;
 			Terrain terra = scape.getTerrain();
 			cell.setTerrain(terra);
-			cell.setTerrain(new Trapdoor(cell));
+			cell.setTerrain(new Door(cell));
 		}
 		swapButton();
 	}

@@ -6,6 +6,7 @@
 package terraplana;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,5 +58,15 @@ public class ImageCache{
 			}
 		}
 		return img;
+	}
+	
+	/**
+	 * Request an image from the cache.
+	 * @param file The image to retrieve.
+	 * @return The cached image.
+	 */
+	public Image request(String file, int x, int y, int width, int height){
+		BufferedImage img = (BufferedImage)request(file);
+		return img.getSubimage(x*width, y*height, width, height);
 	}
 }

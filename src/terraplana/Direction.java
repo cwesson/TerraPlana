@@ -95,4 +95,20 @@ public enum Direction{
 				return null;
 		}
 	}
+	
+	public int index(){
+		switch(this) {
+			default:
+			case NONE:
+			case NORTH:
+				return 0;
+			case SOUTH:
+				return 1;
+			case EAST:
+				return 2;
+			case WEST:
+				return 3;
+		}
+		
+	}
 }

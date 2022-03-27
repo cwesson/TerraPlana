@@ -12,7 +12,7 @@ public class Debug{
 	private static Logger logger = Logger.getLogger("");
 
 	public static void enable(){
-		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.FINE);
 	}
 	
 	public static void disable(){
@@ -29,5 +29,9 @@ public class Debug{
 	
 	public static void info(String msg) {
 		logger.info(msg);
+	}
+	
+	public static void debug(String msg) {
+		logger.fine(msg);
 	}
 }

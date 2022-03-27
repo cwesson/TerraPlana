@@ -6,7 +6,7 @@ end 14 21
 item HealthPack 1 4 100
 item Flippers 7 3
 item IceSkates 7 6
-item Carabiner 3 13
+item Carabiner 5 13
 item Key 10 10
 item FlipFlops 1 15
 item Balloon 10 14
@@ -14,8 +14,7 @@ landscape Cactus 4 16
 landscape Gate 13 21 1
 landscape Teleport 9 18 2 18
 landscape Toggle 9 19 2 21
-landscape Trapdoor 2 21
-landscape Fire 2 15
+landscape Door 2 21
 movable IceCube 2 14
 movable IceCube 4 14
 movable Box 4 15

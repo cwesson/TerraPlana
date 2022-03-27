@@ -142,9 +142,7 @@ public class Board{
 		Creature creature = ContentLoader.getInstance().loadCreature(type, args);
 		
 		Debug.info("Creature " + type);
-		creature.setTile(this.at(pos));
-		actors.put(creature, pos);
-		creatures.add(creature);
+		addCreature(creature, pos);
 	}
 
 	private void parseItem(String[] cmd) throws Exception{
@@ -285,6 +283,11 @@ public class Board{
 					crea.finalize();
 				}
 				creatures.removeAll(creatures);
+				for(List<Tile> row : map) {
+					for(Tile tile : row) {
+						tile.finalize();
+					}
+				}
 				return true;
 			}else{
 				player.done();
@@ -317,6 +320,10 @@ public class Board{
 		Tile oldTile = this.at(pos);
 		Tile newTile = this.at(newPos);
 		Tile pushTile = this.at(pushPos);
+		if(newTile == null){
+			return false;
+		}
+		actor.setDirection(dir);
 		if(oldTile.onExit(actor, dir, newTile)){
 			if(newTile.onEnter(actor, dir)){
 				boolean pushed = true;
@@ -347,7 +354,6 @@ public class Board{
 				if(pushed){
 					actors.put(actor, newPos);
 					actor.setTile(newTile);
-					actor.setDirection(dir);
 					oldTile.onExited(actor, dir, newTile);
 					if(actor.isPlayer()){
 						List<Item> items = newTile.getItems();
@@ -383,6 +389,16 @@ public class Board{
 		at(pos).removeActor(act);
 		creatures.remove(act);
 		removed.put(act, pos);
+	}
+	
+	public synchronized void addCreature(Creature creature, Position pos) {
+		Tile tile = this.at(pos);
+		if(tile.onEnter(creature, creature.getDirection())) {
+			tile.onEntered(creature, creature.getDirection(), null);
+			creature.setTile(tile);
+			actors.put(creature, pos);
+			creatures.add(creature);
+		}
 	}
 
 	public synchronized Position getPosition(Actor player){

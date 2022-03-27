@@ -10,12 +10,12 @@ import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
 
-public class TrapdoorOpen extends Landscape {
-	public TrapdoorOpen(Tile place, String[] args){
+public class DoorOpen extends Landscape {
+	public DoorOpen(Tile place, String[] args){
 		super(place);
 	}
 	
-	public TrapdoorOpen(Tile place){
+	public DoorOpen(Tile place){
 		super(place);
 	}
 	

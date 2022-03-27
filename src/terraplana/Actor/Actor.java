@@ -230,16 +230,20 @@ public abstract class Actor implements Attributes{
 		public void run(){
 			if(act.inputAllowed() && act.getStatus() == Actor.Status.STATUS_OK){
 				boolean moved = false;
-				boolean again = true;
-				while(!moved && again) {
+				int tries = 4;
+				while(!moved && tries > 0) {
 					Direction dir = act.tick(time);
 					if(dir != Direction.NONE){
 						moved = act.getTile().getBoard().moveActor(act, dir);
 						if(!moved){
-							again = act.onStopped();
+							if(act.onStopped()){
+								--tries;
+							}else{
+								tries = 0;
+							}
 						}
 					}else{
-						again = false;
+						tries = 0;
 					}
 				}
 			}

@@ -11,7 +11,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import terraplana.Direction;
-import terraplana.Position;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
@@ -32,17 +31,20 @@ public class Water extends Terrain{
 
 	@Override
 	public boolean onEntered(Actor player, Direction dir, Tile last){
-		Position pos = player.getTile().getBoard().getPosition(player);
-		pos.move(dir, false);
-		
 		if(player.hasAttribute("movement.swim.safe")){
 			if(timers.get(player) != null){
 				timers.get(player).cancel();
 				timers.remove(player);
 			}
 		}else{
-			Terrain terr = last.getTerrain();
-			if(terr.getClass() != this.getClass()){
+			boolean settimer = true;
+			if(last != null) {
+				Terrain terr = last.getTerrain();
+				if(terr.getClass() == this.getClass()){
+					settimer = true;
+				}
+			}
+			if(settimer) {
 				if(timers.get(player) == null){
 					timers.put(player, new WaterTimer(player));
 				}

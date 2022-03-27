@@ -16,7 +16,6 @@ import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -43,7 +42,15 @@ public class Display extends JPanel implements KeyListener{
 	private ContentLoader loader = ContentLoader.getInstance();
 	
 	public Display(Player player) throws Exception{
-		this(player, null);
+		this.player = player;
+		player.setDisplay(this);
+		this.setPreferredSize(new Dimension(DRAW_WIDTH, DRAW_HEIGHT));
+
+		addKeyListener(this);
+		setFocusable(true);
+		requestFocusInWindow();
+		new DisplayTimer();
+		
 		win = new JFrame("TerraPlana - " + player.getName());
 		win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		win.setIconImage(icache.request("img/icon.png"));
@@ -53,23 +60,14 @@ public class Display extends JPanel implements KeyListener{
 		win.setVisible(true);
 	}
 	
-	protected Display(Player player, JApplet applet){
-		this.player = player;
-		player.setDisplay(this);
-		this.setPreferredSize(new Dimension(DRAW_WIDTH, DRAW_HEIGHT));
-		if(applet != null){
-			applet.add(this);
-		}
-		addKeyListener(this);
-		setFocusable(true);
-		requestFocusInWindow();
-		new DisplayTimer();
-	}
-	
 	BufferedImage drawBoard(Board board, BufferedImage fgscreen){
 		Graphics foreground = fgscreen.getGraphics();
 		
 		Position pos = board.getPosition(player);
+		if(pos == null) {
+			return fgscreen;
+		}
+		
 		int px = pos.getX();
 		int py = pos.getY();
 		int offx = (int)(DRAW_WIDTH/2.0-16);
@@ -79,7 +77,8 @@ public class Display extends JPanel implements KeyListener{
 		{
 			for(int i = 0; i < board.getHeight(); i++){
 				for(int j = 0; j < board.getWidth(); j++){
-					Tile cell = board.at(new Position(j, i));
+					Position loc = new Position(j, i);
+					Tile cell = board.at(loc);
 					if(cell != null){
 						Terrain terra = cell.getTerrain();
 						if(terra != Terrain.VOID){
@@ -140,7 +139,7 @@ public class Display extends JPanel implements KeyListener{
 		}
 		
 		// Draw creatures.
-		{
+		synchronized(board){
 			for(Creature creature : board.getCreatures()){
 				String type = creature.getClass().getName();
 				int ix = creature.getTile().getBoard().getPosition(creature).getX();
@@ -165,8 +164,8 @@ public class Display extends JPanel implements KeyListener{
 		
 		// Draw the player.
 		{
-			Direction dir = player.getDirection();
-			Image img = icache.request("img/Player" + "-" + dir + ".png");
+			int index = player.getDirection().index();
+			Image img = icache.request("img/Player.png", 0, index, IMG_SIZE, IMG_SIZE);
 			foreground.drawImage(img, offx, offy, this);
 		}
 		

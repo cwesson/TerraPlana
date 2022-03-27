@@ -106,6 +106,10 @@ public class Tile{
 		terrain = terr;
 	}
 	
+	public void finalize(){
+		terrain.finalize();
+	}
+	
 	/**
 	 * Called when the Player attempts to move onto the cell.
 	 * @param player The Player.

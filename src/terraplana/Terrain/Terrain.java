@@ -151,6 +151,10 @@ public abstract class Terrain implements Attributes{
 		return true;
 	}
 
+	public void finalize(){
+		
+	}
+
 	@Override
 	public boolean hasAttribute(String attr){
 		if(attributes.contains(attr)){
