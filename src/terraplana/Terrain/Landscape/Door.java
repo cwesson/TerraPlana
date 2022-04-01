@@ -23,8 +23,14 @@ public class Door extends Landscape {
 		super(place);
 	}
 	
+	@Override
 	public void activate() {
-		state = 1-state;
+		state = 1;
+	}
+	
+	@Override
+	public void deactivate() {
+		state = 0;
 	}
 	
 	@Override

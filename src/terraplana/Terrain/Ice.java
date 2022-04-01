@@ -14,6 +14,7 @@ import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Actor.Player;
 import terraplana.Movable.Movable;
+import terraplana.Terrain.Landscape.Landscape;
 
 public class Ice extends Terrain{
 
@@ -46,7 +47,10 @@ public class Ice extends Terrain{
 				Position pos = actor.getTile().getBoard().getPosition(actor);
 				pos.move(dir);
 				Terrain terr = next.getTerrain();
-				if(terr.getClass() != this.getClass()){
+				if(Landscape.class.isAssignableFrom(terr.getClass())){
+					terr = ((Landscape)terr).getTerrain();
+				}
+				if(!terr.getClass().isAssignableFrom(this.getClass())){
 					actor.allowInput();
 				}
 			}

@@ -41,7 +41,8 @@ public class Spawner extends Landscape {
 		timer = new SpawnerTimer(this, interval);
 	}
 	
-	protected void activate(){
+	@Override
+	public void activate(){
 		try {
 			spawn = ContentLoader.getInstance().loadCreature(type, spawnArgs);
 			Debug.info("Creature " + type);

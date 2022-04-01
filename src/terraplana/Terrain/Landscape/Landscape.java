@@ -152,6 +152,12 @@ public abstract class Landscape extends Terrain implements Attributes{
 	public boolean onExited(Projectile proj, Direction dir, Tile next){
 		return terrain.onExited(proj, dir, next);
 	}
+
+	public void activate(){
+	}
+	
+	public void deactivate(){
+	}
 	
 	public void finalize(){
 		terrain.finalize();

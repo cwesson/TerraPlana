@@ -31,16 +31,17 @@ public class Toggle extends Landscape {
 	
 	protected void swapButton() {
 		state = 1-state;
-	}
-	
-	protected void swapDoor(){
+		
 		Tile cell = tile.getBoard().at(td);
 		Terrain terr = cell.getTerrain();
-		if(Door.class.isAssignableFrom(terr.getClass())){
-			Door door = (Door)terr;
-			door.activate();
+		if(Landscape.class.isAssignableFrom(terr.getClass())){
+			Landscape scape = (Landscape)terr;
+			if(state == 0){
+				scape.deactivate();
+			}else{
+				scape.activate();
+			}
 		}
-		swapButton();
 	}
 	
 	@Override
@@ -51,7 +52,7 @@ public class Toggle extends Landscape {
 	
 	@Override
 	public boolean onEntered(Actor actor, Direction dir, Tile last){
-		swapDoor();
+		swapButton();
 		return true;
 	}
 	
@@ -63,7 +64,7 @@ public class Toggle extends Landscape {
 	
 	@Override
 	public boolean onEntered(Movable move, Direction dir, Tile last){
-		swapDoor();
+		swapButton();
 		return true;
 	}
 
