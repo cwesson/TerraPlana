@@ -81,6 +81,23 @@ public class Corner extends Landscape {
 	}
 	
 	@Override
+	public boolean onExit(Actor actor, Direction dir, Tile next){
+		if(super.onExit(actor, dir, next)){
+			switch(corner){
+				case 0:
+					return (dir == Direction.SOUTH || dir == Direction.EAST);
+				case 1:
+					return (dir == Direction.SOUTH || dir == Direction.WEST);
+				case 2:
+					return (dir == Direction.NORTH || dir == Direction.WEST);
+				case 3:
+					return (dir == Direction.NORTH || dir == Direction.EAST);
+			}
+		}
+		return false;
+	}
+	
+	@Override
 	public boolean onEnter(Movable move, Direction dir){
 		super.onEnter(move, dir);
 		switch(corner){
@@ -92,6 +109,23 @@ public class Corner extends Landscape {
 				return (dir == Direction.SOUTH || dir == Direction.EAST);
 			case 3:
 				return (dir == Direction.SOUTH || dir == Direction.WEST);
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean onExit(Movable move, Direction dir, Tile next){
+		if(super.onExit(move, dir, next)){
+			switch(corner){
+				case 0:
+					return (dir == Direction.SOUTH || dir == Direction.EAST);
+				case 1:
+					return (dir == Direction.SOUTH || dir == Direction.WEST);
+				case 2:
+					return (dir == Direction.NORTH || dir == Direction.WEST);
+				case 3:
+					return (dir == Direction.NORTH || dir == Direction.EAST);
+			}
 		}
 		return false;
 	}

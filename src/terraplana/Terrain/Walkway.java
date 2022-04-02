@@ -30,7 +30,7 @@ public abstract class Walkway extends Terrain{
 	@Override
 	public boolean onEntered(Actor actor, Direction dir, Tile last){
 		if(actor.isPlayer()){
-			if(!actor.hasAttribute("movement.skate.safe") && !tile.hasAttribute("movement.skate.safe")){
+			if(!actor.hasAttribute("movement.drag.safe") && !tile.hasAttribute("movement.drag.safe")){
 				timer = new WalkwayTimer(actor, this.dir);
 			}
 		}
