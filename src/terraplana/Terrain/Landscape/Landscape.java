@@ -95,10 +95,10 @@ public abstract class Landscape extends Terrain implements Attributes{
 	 * Called when the Movable attempts to move out of the cell.
 	 * @param move The Movable.
 	 * @param dir The Direction the Movable moved.
-	 * @return true if the Movable should be allowed to exit the cell.
+	 * @return Direction to exit the cell.
 	 */
 	@Override
-	public boolean onExit(Movable move, Direction dir, Tile next){
+	public Direction onExit(Movable move, Direction dir, Tile next){
 		return terrain.onExit(move, dir, next);
 	}
 

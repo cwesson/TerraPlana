@@ -43,8 +43,8 @@ public class Star extends Terrain {
 	}
 	
 	@Override
-	public boolean onExit(Movable move, Direction dir, Tile next){
-		return false;
+	public Direction onExit(Movable move, Direction dir, Tile next){
+		return Direction.NONE;
 	}
 	
 	public String toString(){

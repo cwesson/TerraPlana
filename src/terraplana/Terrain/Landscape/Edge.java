@@ -83,21 +83,13 @@ public class Edge extends Landscape {
 	}
 	
 	@Override
-	public boolean onExit(Movable move, Direction dir, Tile next){
+	public Direction onExit(Movable move, Direction dir, Tile next){
 		super.onExit(move, dir, next);
-		switch(edge){
-			case NORTH:
-				return (dir != Direction.NORTH);
-			case EAST:
-				return (dir != Direction.EAST);
-			case SOUTH:
-				return (dir != Direction.SOUTH);
-			case WEST:
-				return (dir != Direction.WEST);
-			default:
-				break;
+		if(dir != edge){
+			return dir;
+		}else {
+			return Direction.NONE;
 		}
-		return false;
 	}
 
 	@Override

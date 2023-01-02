@@ -32,6 +32,7 @@ public class Board{
 	private List<Creature> creatures = new ArrayList<Creature>();
 	private Map<Character, String> terrainmap = new HashMap<Character, String>();
 	private Map<Projectile, Position> projectiles = new HashMap<Projectile, Position>();
+	private Map<Movable, Position> movables = new HashMap<Movable, Position>();
 	private int level = 0;
 	private Game game = null;
 	private Position start;
@@ -173,7 +174,7 @@ public class Board{
 		Movable mv = ContentLoader.getInstance().loadMovable(type, args);
 
 		Debug.info("Movable " + type);
-		at(pos).addMovable(mv);
+		addMovable(mv, pos);
 	}
 	
 	private void parseLandscape(String[] cmd) throws Exception{
@@ -313,6 +314,13 @@ public class Board{
 		return moveActor(actor, dir, newPos);
 	}
 
+	public synchronized boolean moveMovable(Movable move, Direction dir){
+		Position pos = movables.get(move);
+		Position newPos = pos.clone();
+		newPos.move(dir);
+		return moveMovable(move, null, dir, pos, newPos);
+	}
+
 	public synchronized boolean moveActor(Actor actor, Direction dir, Position newPos){
 		Position pos = actors.get(actor);
 		Position pushPos = newPos.clone();
@@ -324,38 +332,26 @@ public class Board{
 			return false;
 		}
 		actor.setDirection(dir);
+		// Make sure we can leave the current tile
 		if(oldTile.onExit(actor, dir, newTile)){
+			// Make sure we can enter the new tile
 			if(newTile.onEnter(actor, dir)){
-				boolean pushed = true;
+				// Check if something needs to be pushed out of the way
+				boolean clear = false;
 				if(actor.isPlayer() && newTile.hasMovable() && pushTile != null){
-					if(!pushTile.hasMovable()){
-						Movable mv = newTile.getMovable();
-						if(newTile.onExit(mv, dir, pushTile)){
-							if(pushTile.onEnter(mv, dir)){
-								if(mv.onPush((Player)actor, dir, pushTile)){
-									newTile.removeMovable();
-									pushTile.addMovable(mv);
-									newTile.onExited(mv, dir, pushTile);
-									mv.onPushed((Player)actor, dir, pushTile);
-									pushTile.onEntered(mv, dir, newTile);
-								}else {
-									pushed = false;
-								}
-							}else{
-								pushed = false;
-							}
-						}else{
-							pushed = false;
-						}
-					}else{
-						pushed = false;
-					}
+					Movable mv = newTile.getMovable();
+					clear = moveMovable(mv, actor, dir, newPos, pushPos);
+				}else{
+					clear = true;
 				}
-				if(pushed){
+				// If the new tile is not blocked
+				if(clear){
 					actors.put(actor, newPos);
 					actor.setTile(newTile);
+					// Leave the old tile
 					oldTile.onExited(actor, dir, newTile);
 					if(actor.isPlayer()){
+						// Pickup any items
 						List<Item> items = newTile.getItems();
 						for(Item it : items){
 							if(it.onPickup((Player)actor)){
@@ -367,8 +363,10 @@ public class Board{
 							}
 						}
 					}
+					// Enter the new tile
 					newTile.onEntered(actor, dir, oldTile);
 					if(actor.isPlayer()){
+						// Check if its the exit
 						if(newPos.equals(this.getEnd())){
 							newTile.onExit(actor, dir, null);
 							newTile.onExited(actor, dir, null);
@@ -381,6 +379,32 @@ public class Board{
 			}
 		}
 		return false;
+	}
+	
+
+	public synchronized boolean moveMovable(Movable move, Actor act, Direction dir, Position oldPos, Position newPos){
+		Tile pushTile = this.at(newPos);
+		Tile oldTile = this.at(oldPos);
+		// Check if it can be pushed
+		Direction redirect = oldTile.onExit(move, dir, pushTile);
+		boolean clear = false;
+		if(redirect != Direction.NONE){
+			Position pushPos = oldPos.clone();
+			pushPos.move(redirect);
+			pushTile = this.at(pushPos);
+			if(!pushTile.hasMovable()){
+				if(pushTile.onEnter(move, redirect)){
+					oldTile.onExited(move, redirect, pushTile);
+					oldTile.removeMovable();
+					movables.replace(move, pushPos);
+					pushTile.addMovable(move);
+					pushTile.onEntered(move, redirect, oldTile);
+					move.onPushed(act, dir, pushTile);
+					clear = true;
+				}
+			}
+		}
+		return clear;
 	}
 
 	public synchronized void removeActor(Actor act) {
@@ -399,6 +423,12 @@ public class Board{
 			actors.put(creature, pos);
 			creatures.add(creature);
 		}
+	}
+	
+	public synchronized void addMovable(Movable move, Position pos) {
+		Tile tile = this.at(pos);
+		movables.put(move, pos);
+		tile.addMovable(move);
 	}
 
 	public synchronized Position getPosition(Actor player){

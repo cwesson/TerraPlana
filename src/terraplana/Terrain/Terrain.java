@@ -97,10 +97,10 @@ public abstract class Terrain implements Attributes, Sprite{
 	 * Called when the Movable attempts to move out of the cell.
 	 * @param move The Movable.
 	 * @param dir The Direction the Movable moved.
-	 * @return true if the Movable should be allowed to exit the cell.
+	 * @return Direction to exit the cell.
 	 */
-	public boolean onExit(Movable move, Direction dir, Tile next){
-		return true;
+	public Direction onExit(Movable move, Direction dir, Tile next){
+		return dir;
 	}
 
 	/**

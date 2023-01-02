@@ -64,8 +64,8 @@ public class LightBridge extends Landscape {
 	}
 	
 	@Override
-	public boolean onExit(Movable move, Direction dir, Tile next){
-		return true;
+	public Direction onExit(Movable move, Direction dir, Tile next){
+		return dir;
 	}
 
 	@Override

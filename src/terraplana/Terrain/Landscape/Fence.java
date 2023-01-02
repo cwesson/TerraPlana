@@ -49,9 +49,9 @@ public class Fence extends Landscape {
 	}
 
 	@Override
-	public boolean onExit(Movable move, Direction dir, Tile next){
+	public Direction onExit(Movable move, Direction dir, Tile next){
 		super.onExit(move, dir, next);
-		return true;
+		return dir;
 	}
 
 	@Override

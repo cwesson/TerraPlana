@@ -5,7 +5,6 @@
 
 package terraplana.mod.portal.Terrain.Landscape;
 
-import terraplana.Debug;
 import terraplana.Direction;
 import terraplana.Position;
 import terraplana.Tile;

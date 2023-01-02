@@ -7,7 +7,7 @@ package terraplana.Movable;
 
 import terraplana.Direction;
 import terraplana.Tile;
-import terraplana.Actor.Player;
+import terraplana.Actor.Actor;
 import terraplana.Projectile.Projectile;
 
 public abstract class Movable{
@@ -19,20 +19,20 @@ public abstract class Movable{
 	protected abstract void parseArgs(String[] args);
 
 	/**
-	 * Called when the Player attempts to move onto the cell.
-	 * @param player The Player.
-	 * @param dir The Direction the Player moved.
-	 * @return true if the Player should be allowed to enter the cell.
+	 * Called when the Actor attempts to move onto the cell.
+	 * @param act The Actor.
+	 * @param dir The Direction the Actor moved.
+	 * @return true if the Actor should be allowed to enter the cell.
 	 */
-	public abstract boolean onPush(Player player, Direction dir, Tile next);
+	public abstract boolean onPush(Actor act, Direction dir, Tile next);
 	
 	/**
-	 * Called when the Player attempts to move onto the cell.
-	 * @param player The Player.
-	 * @param dir The Direction the Player moved.
+	 * Called when an Actor attempts to move onto the cell.
+	 * @param act The Actor.
+	 * @param dir The Direction the Actor moved.
 	 * @return Currently ignored.
 	 */
-	public abstract boolean onPushed(Player player, Direction dir, Tile next);
+	public abstract boolean onPushed(Actor act, Direction dir, Tile next);
 
 	/**
 	 * Called when a Projectile attempts to move onto the cell.

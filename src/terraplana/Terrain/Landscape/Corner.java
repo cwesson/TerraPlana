@@ -136,22 +136,45 @@ public class Corner extends Landscape {
 	}
 	
 	@Override
-	public boolean onExit(Movable move, Direction dir, Tile next){
-		if(super.onExit(move, dir, next)){
-			switch(corner){
-				case SOUTH_EAST:
-					return (dir == Direction.SOUTH || dir == Direction.EAST);
-				case SOUTH_WEST:
-					return (dir == Direction.SOUTH || dir == Direction.WEST);
-				case NORTH_WEST:
-					return (dir == Direction.NORTH || dir == Direction.WEST);
-				case NORTH_EAST:
-					return (dir == Direction.NORTH || dir == Direction.EAST);
-				default:
-					break;
-			}
+	public Direction onExit(Movable move, Direction dir, Tile next){
+		Direction redirect = Direction.NONE;
+		switch(corner){
+			case SOUTH_EAST:
+				if(dir == Direction.NORTH) {
+					redirect = Direction.EAST;
+				}else if(dir == Direction.WEST){
+					redirect = Direction.SOUTH;
+				}
+				break;
+			case SOUTH_WEST:
+				if(dir == Direction.NORTH) {
+					redirect = Direction.WEST;
+				}else if(dir == Direction.EAST){
+					redirect = Direction.SOUTH;
+				}
+				break;
+			case NORTH_WEST:
+				if(dir == Direction.SOUTH) {
+					redirect = Direction.WEST;
+				}else if(dir == Direction.EAST){
+					redirect = Direction.NORTH;
+				}
+				break;
+			case NORTH_EAST:
+				if(dir == Direction.SOUTH) {
+					redirect = Direction.EAST;
+				}else if(dir == Direction.WEST){
+					redirect = Direction.NORTH;
+				}
+				break;
+			default:
+				break;
 		}
-		return false;
+		if(redirect != Direction.NONE){
+			return super.onExit(move, redirect, next);
+		}else{
+			return Direction.NONE;
+		}
 	}
 
 	@Override

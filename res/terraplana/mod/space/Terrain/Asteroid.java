@@ -44,8 +44,8 @@ public class Asteroid extends Terrain {
 	}
 	
 	@Override
-	public boolean onExit(Movable move, Direction dir, Tile next){
-		return true;
+	public Direction onExit(Movable move, Direction dir, Tile next){
+		return dir;
 	}
 	
 	public String toString(){

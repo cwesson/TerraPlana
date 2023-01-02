@@ -14,7 +14,8 @@ landscape Igloo 1 6
 landscape Gate 6 13 2
 landscape Teleport 3 11 10 9
 landscape Teleport 10 9 3 11
-landscape Spawner 5 3 5 3 1000 Ant east
+landscape Spawner 5 3 5 3 5000 Ant east
+landscape Glass 7 11
 creature SlimeBlob 9 10 north
 
 map

@@ -7,7 +7,7 @@ package terraplana.Movable;
 
 import terraplana.Direction;
 import terraplana.Tile;
-import terraplana.Actor.Player;
+import terraplana.Actor.Actor;
 import terraplana.Terrain.Ice;
 import terraplana.Terrain.Lava;
 import terraplana.Terrain.Stone;
@@ -26,12 +26,12 @@ public class IceCube extends Movable{
 	}
 
 	@Override
-	public boolean onPush(Player player, Direction dir, Tile next){
+	public boolean onPush(Actor act, Direction dir, Tile next){
 		return true;
 	}
 
 	@Override
-	public boolean onPushed(Player player, Direction dir, Tile next){
+	public boolean onPushed(Actor act, Direction dir, Tile next){
 		if(next.hasAttribute("element.water")){
 			next.setTerrain(new Ice(next));
 			next.removeMovable();

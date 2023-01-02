@@ -69,8 +69,14 @@ public class Ice extends Terrain{
 	}
 	
 	@Override
-	public boolean onExit(Movable move, Direction dir, Tile next){
+	public boolean onEntered(Movable move, Direction dir, Tile last){
+		new IceMover(move, dir);
 		return true;
+	}
+	
+	@Override
+	public Direction onExit(Movable move, Direction dir, Tile next){
+		return dir;
 	}
 	
 	public String toString(){
@@ -97,6 +103,23 @@ public class Ice extends Terrain{
 					this.dir = this.dir.invert();
 				}
 			}
+		}
+	}
+	
+	private class IceMover extends TimerTask{
+		private Timer timer = new Timer();
+		private Movable move;
+		private Direction dir;
+		
+		public IceMover(Movable mv, Direction dir){
+			this.move = mv;
+			this.dir = dir;
+			timer.schedule(this, 100);
+		}
+
+		@Override
+		public void run(){
+			tile.getBoard().moveMovable(move, dir);
 		}
 	}
 }
