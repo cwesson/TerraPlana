@@ -1,5 +1,5 @@
 /**
- * @file Trapdoor.java
+ * @file Door.java
  * @author Conlan Wesson
  */
 

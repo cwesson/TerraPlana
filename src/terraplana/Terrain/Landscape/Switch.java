@@ -1,3 +1,8 @@
+/**
+ * @file Switch.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.Terrain.Landscape;
 
 import terraplana.Direction;

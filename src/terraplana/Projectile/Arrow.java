@@ -21,8 +21,10 @@ public class Arrow extends Projectile {
 	public boolean onImpact(){
 		super.onImpact();
 		Position pos = board.getPosition(this);
-		String args[] = new String[] {"1"};
-		board.at(pos).addItem(new terraplana.Item.Arrow(args));
+		if(pos != null){
+			String args[] = new String[] {"1"};
+			board.at(pos).addItem(new terraplana.Item.Arrow(args));
+		}
 		return true;
 	}
 

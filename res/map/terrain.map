@@ -12,3 +12,5 @@ terrain WalkwayNorth ^
 terrain WalkwaySouth v
 terrain WalkwayEast >
 terrain WalkwayWest <
+terrain Mulch k
+terrain Gravel :

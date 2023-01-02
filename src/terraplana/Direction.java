@@ -6,13 +6,12 @@
 package terraplana;
 
 public enum Direction{
-	NONE(-1),
+	NONE(0),
 	NORTH(0),
-	EAST(90),
-	SOUTH(180),
-	WEST(270);
+	EAST(1),
+	SOUTH(2),
+	WEST(3);
 	
-	@SuppressWarnings("unused")
 	private final int dir;
 	
 	private Direction(int dir){
@@ -97,18 +96,6 @@ public enum Direction{
 	}
 	
 	public int index(){
-		switch(this) {
-			default:
-			case NONE:
-			case NORTH:
-				return 0;
-			case EAST:
-				return 1;
-			case SOUTH:
-				return 2;
-			case WEST:
-				return 3;
-		}
-		
+		return dir;
 	}
 }

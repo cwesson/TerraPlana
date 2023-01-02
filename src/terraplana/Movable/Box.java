@@ -8,6 +8,7 @@ package terraplana.Movable;
 import terraplana.Direction;
 import terraplana.Tile;
 import terraplana.Actor.Player;
+import terraplana.Projectile.Projectile;
 import terraplana.Terrain.Lava;
 import terraplana.Terrain.Path;
 import terraplana.Terrain.Water;
@@ -41,5 +42,14 @@ public class Box extends Movable{
 		}
 		return false;
 	}
-	
+
+	@Override
+	public boolean onEnter(Projectile proj, Direction dir){
+		return true;
+	}
+
+	@Override
+	public boolean onExit(Projectile proj, Direction dir){
+		return false;
+	}
 }

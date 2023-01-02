@@ -1,11 +1,10 @@
 /**
- * @file B.java
+ * @file Button.java
  * @author Conlan Wesson
  */
 
 package terraplana.Terrain.Landscape;
 
-import terraplana.Debug;
 import terraplana.Direction;
 import terraplana.Position;
 import terraplana.Tile;

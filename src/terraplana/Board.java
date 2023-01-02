@@ -412,7 +412,11 @@ public class Board{
 	}
 
 	public synchronized Position getPosition(Projectile proj){
-		return projectiles.get(proj).clone();
+		Position pos = projectiles.get(proj);
+		if(pos != null){
+			return pos.clone();
+		}
+		return null;
 	}
 	
 	public String getTitle(){

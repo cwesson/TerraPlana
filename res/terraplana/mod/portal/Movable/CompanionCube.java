@@ -9,6 +9,7 @@ import terraplana.Direction;
 import terraplana.Tile;
 import terraplana.Actor.Player;
 import terraplana.Movable.Movable;
+import terraplana.Projectile.Projectile;
 import terraplana.Terrain.Lava;
 import terraplana.mod.portal.Terrain.Acid;
 
@@ -39,4 +40,13 @@ public class CompanionCube extends Movable {
 		return false;
 	}
 
+	@Override
+	public boolean onEnter(Projectile proj, Direction dir){
+		return false;
+	}
+
+	@Override
+	public boolean onExit(Projectile proj, Direction dir){
+		return false;
+	}
 }
