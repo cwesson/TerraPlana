@@ -1,3 +1,8 @@
+/**
+ * @file LightBridge.java
+ * @author Conlan Wesson
+ */
+
 package terraplana.mod.portal.Terrain.Landscape;
 
 import terraplana.Direction;

@@ -14,6 +14,7 @@ import terraplana.Terrain.Terrain;
 public class Star extends Terrain {
 	public Star(Tile place){
 		super(place);
+		attributes.add("hazard");
 	}
 
 	@Override

@@ -10,8 +10,6 @@ import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
 import terraplana.Projectile.Projectile;
-import terraplana.Terrain.Lava;
-import terraplana.mod.portal.Terrain.Acid;
 
 public class CompanionCube extends Movable {
 
@@ -33,8 +31,7 @@ public class CompanionCube extends Movable {
 
 	@Override
 	public boolean onPushed(Actor act, Direction dir, Tile next){
-		// TODO Auto-generated method stub
-		if(next.getTerrain().getClass().equals(Acid.class) || next.getTerrain().getClass().equals(Lava.class)){
+		if(next.getTerrain().hasAttribute("hazard")){
 			next.removeMovable();
 		}
 		return false;

@@ -19,6 +19,7 @@ import terraplana.Terrain.Terrain;
 
 public class Space extends Terrain {
 	private static Map<Actor, SpaceTimer> timers = new HashMap<Actor, SpaceTimer>();
+	private SpaceMover timer = null;
 
 	public Space(Tile place){
 		super(place);
@@ -66,8 +67,22 @@ public class Space extends Terrain {
 	}
 	
 	@Override
+	public boolean onEntered(Movable move, Direction dir, Tile last){
+		timer = new SpaceMover(move, dir);
+		return true;
+	}
+	
+	@Override
 	public Direction onExit(Movable move, Direction dir, Tile next){
 		return dir;
+	}
+	
+	@Override
+	public boolean onExited(Movable move, Direction d, Tile next){
+		if(timer != null) {
+			timer.cancel();
+		}
+		return true;
 	}
 	
 	public String toString(){
@@ -96,6 +111,23 @@ public class Space extends Terrain {
 				}
 			}
 			actor.setHealth(-2);
+		}
+	}
+	
+	private class SpaceMover extends TimerTask{
+		private Timer timer = new Timer();
+		private Movable move;
+		private Direction dir;
+		
+		public SpaceMover(Movable move, Direction dir){
+			this.move = move;
+			this.dir = dir;
+			timer.scheduleAtFixedRate(this, 100, 100);
+		}
+
+		@Override
+		public void run(){
+			tile.getBoard().moveMovable(move, dir);
 		}
 	}
 

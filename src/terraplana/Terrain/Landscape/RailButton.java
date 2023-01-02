@@ -1,5 +1,5 @@
 /**
- * @file Button.java
+ * @file RailButton.java
  * @author Conlan Wesson
  */
 
@@ -12,21 +12,24 @@ import terraplana.Actor.Actor;
 import terraplana.Movable.Movable;
 import terraplana.Terrain.Terrain;
 
-public class Button extends Landscape {
+public class RailButton extends Rail {
 	protected Position td;
 	protected int state = 0;
 
-	public Button(Tile place, String[] args) {
+	public RailButton(Tile place, String[] args) {
 		super(place);
-		td = new Position(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-		if(args.length > 2) {
-			state = Integer.parseInt(args[2]);
+		
+		if(args[0].equals("west-east")){
+			active = RailDirection.WEST_EAST;
+		}else if(args[0].equals("north-south")){
+			active = RailDirection.NORTH_SOUTH;
 		}
-	}
-	
-	public Button(Tile place, Position td) {
-		super(place);
-		this.td = td;
+		inactive = active;
+		
+		td = new Position(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+		if(args.length > 3) {
+			state = Integer.parseInt(args[3]);
+		}
 	}
 	
 	protected void swapButton() {
@@ -79,7 +82,7 @@ public class Button extends Landscape {
 	}
 
 	@Override
-	public int spriteX(){
+	public int spriteY(){
 		return state;
 	}
 }

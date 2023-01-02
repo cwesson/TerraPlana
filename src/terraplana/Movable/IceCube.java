@@ -38,6 +38,8 @@ public class IceCube extends Movable{
 		}else if(next.getTerrain().getClass().equals(Lava.class)){
 			next.setTerrain(new Stone(next));
 			next.removeMovable();
+		}else if(next.getTerrain().hasAttribute("hazard")){
+			next.removeMovable();
 		}
 		return false;
 	}

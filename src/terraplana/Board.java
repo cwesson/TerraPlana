@@ -309,9 +309,13 @@ public class Board{
 
 	public synchronized boolean moveActor(Actor actor, Direction dir){
 		Position pos = actors.get(actor);
+		if(pos != null) {
 		Position newPos = pos.clone();
 		newPos.move(dir);
 		return moveActor(actor, dir, newPos);
+		}else {
+			return false;
+	}
 	}
 
 	public synchronized boolean moveMovable(Movable move, Direction dir){
@@ -392,7 +396,7 @@ public class Board{
 			Position pushPos = oldPos.clone();
 			pushPos.move(redirect);
 			pushTile = this.at(pushPos);
-			if(!pushTile.hasMovable()){
+			if(pushTile != null && !pushTile.hasMovable()){
 				if(pushTile.onEnter(move, redirect)){
 					oldTile.onExited(move, redirect, pushTile);
 					oldTile.removeMovable();

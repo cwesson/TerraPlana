@@ -4,17 +4,26 @@ desc There's gold in them hills.
 start 25 25
 end 40 40
 landscape Gate 40 41 10
+landscape Rail 25 25 west-east north-south
 landscape Rail 24 25 west-east
 landscape Rail 26 25 west-east
+landscape Cactus 27 25
 landscape Rail 25 24 north-south
 landscape Rail 25 26 north-south
 
 landscape Rail 23 25 north-east
 landscape Rail 23 24 north-south
 landscape Rail 23 23 south-east
-landscape Rail 24 23 west-east
+landscape RailSwitch 24 23 west-east 25 25
 landscape Rail 25 23 south-west
 movable Box 24 25
+
+landscape Rail 25 27 north-east
+landscape Rail 26 27 west-east
+landscape Rail 27 27 west-east south-east
+landscape Rail 28 27 north-west
+landscape RailButton 28 26 north-south 27 27
+landscape Rail 28 25 south-west north-south
 
 map
 .................................................

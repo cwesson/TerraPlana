@@ -30,8 +30,12 @@ public class Rail extends Landscape {
 			return dir;
 		}
 	}
-	private RailDirection active;
-	private RailDirection inactive;
+	protected RailDirection active;
+	protected RailDirection inactive;
+	
+	protected Rail(Tile place) {
+		super(place);
+	}
 	
 	public Rail(Tile place, String[] args) {
 		super(place);

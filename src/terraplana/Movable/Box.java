@@ -9,7 +9,6 @@ import terraplana.Direction;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Projectile.Projectile;
-import terraplana.Terrain.Lava;
 import terraplana.Terrain.Path;
 import terraplana.Terrain.Water;
 
@@ -33,11 +32,10 @@ public class Box extends Movable{
 
 	@Override
 	public boolean onPushed(Actor act, Direction dir, Tile next){
-		// TODO Auto-generated method stub
 		if(next.getTerrain().getClass().equals(Water.class)){
 			next.setTerrain(new Path(next));
 			next.removeMovable();
-		}else if(next.getTerrain().getClass().equals(Lava.class)){
+		}else if(next.getTerrain().hasAttribute("hazard")){
 			next.removeMovable();
 		}
 		return false;

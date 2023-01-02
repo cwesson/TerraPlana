@@ -13,6 +13,7 @@ item Balloon 10 14
 landscape Cactus 7 16
 landscape Gate 13 21 1
 landscape Teleport 9 18 2 18
+landscape Teleport 2 18 9 18
 landscape Switch 4 10 2 9
 landscape Button 9 19 2 21
 landscape Door 2 9
