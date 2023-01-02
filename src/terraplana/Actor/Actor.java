@@ -97,6 +97,11 @@ public abstract class Actor implements Attributes, Sprite{
 	public int getLives(){
 		return getAttribute("lives");
 	}
+	
+	public int setLives(int amount){
+		attributes.put("lives", amount);
+		return amount;
+	}
 
 	public void allowInput(){
 		input = true;

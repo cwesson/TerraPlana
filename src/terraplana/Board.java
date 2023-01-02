@@ -221,6 +221,7 @@ public class Board{
 		players.add(player);
 		actors.put(player, start);
 		player.setTile(this.at(start));
+		player.setLives(1);
 		player.setHealth(100);
 		player.getInventory().removeAll(player.getInventory());
 	}
@@ -273,9 +274,9 @@ public class Board{
 		return end;
 	}
 
-	public boolean next(Player player){
+	private boolean next(Player player, int level){
 		try{
-			Board next = game.getBoard(level+1);
+			Board next = game.getBoard(level);
 			if(next != null){
 				next.addPlayer(player);
 				players.remove(player);
@@ -297,6 +298,14 @@ public class Board{
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public boolean next(Player player){
+		return next(player, level+1);
+	}
+
+	public boolean reset(Player player){
+		return next(player, level);
 	}
 
 	public List<Creature> getCreatures(){

@@ -19,7 +19,6 @@ import java.util.Map;
 import terraplana.Actor.Player;
 
 public class Game{
-	private Map<Integer, Board> levels = new HashMap<Integer, Board>();
 	private List<String> files = new ArrayList<String>();
 	private Map<String, Integer> codes = new HashMap<String, Integer>();
 	private String title = "";
@@ -95,21 +94,16 @@ public class Game{
 	}
 	
 	public Board getBoard(int num) throws Exception{
-		if(levels.containsKey(num)){
-			return levels.get(num);
-		}else{
-			if(files.size() > num){
-				Board board;
-				if(local){
-					board = new Board(files.get(num), this, num);
-				}else{
-					board = new Board(new URL(files.get(num)), this, num);
-				}
-				levels.put(num, board);
-				return board;
+		if(files.size() > num){
+			Board board;
+			if(local){
+				board = new Board(files.get(num), this, num);
 			}else{
-				return null;
+				board = new Board(new URL(files.get(num)), this, num);
 			}
+			return board;
+		}else{
+			return null;
 		}
 	}
 	

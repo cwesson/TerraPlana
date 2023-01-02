@@ -274,6 +274,8 @@ public class Display extends JPanel implements KeyListener{
 				int strheight = (int)uibuffer.getFontMetrics().getHeight();
 				uibuffer.drawString(msg, (int)centerX-strwidth/2, (int)centerY+strheight);
 			}
+			
+			nextMove();
 		}
 
 		int fgCenterLeft = (int)(centerX-(DRAW_WIDTH/2.0)*scale);
@@ -340,6 +342,9 @@ public class Display extends JPanel implements KeyListener{
 				break;
 			case KeyEvent.VK_0:
 				player.setSelected(9);
+				break;
+			case KeyEvent.VK_R:
+				player.getTile().getBoard().reset(player);
 				break;
 		}
 		code = KeyEvent.VK_UNDEFINED;
