@@ -14,6 +14,7 @@ import terraplana.Terrain.Terrain;
 public class Acid extends Terrain {
 	public Acid(Tile place){
 		super(place);
+		attributes.add("hazard");
 	}
 
 	@Override

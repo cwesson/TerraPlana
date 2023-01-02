@@ -13,6 +13,7 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -82,17 +83,18 @@ public class Display extends JPanel implements KeyListener{
 					if(cell != null){
 						Terrain terra = cell.getTerrain();
 						if(terra != Terrain.VOID){
-							Landscape scape = null;
-							if(Landscape.class.isAssignableFrom(terra.getClass())){
-								scape = (Landscape)terra;
-								terra = scape.getTerrain();
+							ArrayList<Landscape> scapes = new ArrayList<Landscape>();
+							while(Landscape.class.isAssignableFrom(terra.getClass())){
+								Landscape ls = (Landscape)terra;
+								scapes.add(ls);
+								terra = ls.getTerrain();
 							}
 							// Draw terrain.
 							Image img = icache.request((Sprite)terra);
 							foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
 							
 							// Draw Landscape.
-							if(scape != null){
+							for(Landscape scape : scapes){
 								img = icache.request((Sprite)scape);
 								foreground.drawImage(img, ((j-px)*IMG_SIZE)+offx, ((i-py)*IMG_SIZE)+offy, this);
 							}

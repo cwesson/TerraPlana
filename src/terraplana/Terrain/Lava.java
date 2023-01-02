@@ -14,6 +14,7 @@ public class Lava extends Terrain{
 
 	public Lava(Tile place){
 		super(place);
+		attributes.add("hazard");
 	}
 
 	@Override

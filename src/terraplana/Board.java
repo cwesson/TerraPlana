@@ -434,7 +434,22 @@ public class Board{
 		Tile oldTile = this.at(pos);
 		Tile newTile = this.at(newPos);
 		if(oldTile.onExit(proj, dir, newTile)){
+			if(oldTile.hasMovable()){
+				Movable mv = oldTile.getMovable();
+				if(!mv.onExit(proj, dir)){
+					removeProjectile(proj);
+					return false;
+				}
+			}
 			if(newTile.onEnter(proj, dir)){
+				if(newTile.hasMovable()){
+					Movable mv = newTile.getMovable();
+					if(!mv.onEnter(proj, dir)){
+						proj.onImpact();
+						removeProjectile(proj);
+						return false;
+					}
+				}
 				oldTile.onExited(proj, dir, newTile);
 				oldTile.removeProjectile(proj);
 				projectiles.replace(proj, newPos);
@@ -457,6 +472,7 @@ public class Board{
 	}
 
 	public synchronized void removeProjectile(Projectile proj) {
+		proj.finalize();
 		projectiles.remove(proj);
 	}
 }

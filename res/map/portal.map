@@ -11,8 +11,10 @@ landscape Fence 5 7
 landscape Fence 9 5
 landscape portal.PortalOrange 1 7 1 7
 landscape portal.PortalBlue 12 5 12 5
-landscape portal.SuperButton 8 17 2 20
+landscape portal.SuperButton 2 17 2 20
+landscape portal.SuperButton 8 10 8 14
 landscape Door 2 20
+landscape portal.BridgeProjector 8 14 south 8 14
 
 map
 ====================
