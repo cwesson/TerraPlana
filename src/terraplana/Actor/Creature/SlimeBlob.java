@@ -82,7 +82,7 @@ public class SlimeBlob extends Creature{
 	}
 	
 	@Override
-	protected boolean onStopped(){
+	protected boolean onStopped(int count){
 		direction = turn(direction);
 		return true;
 	}

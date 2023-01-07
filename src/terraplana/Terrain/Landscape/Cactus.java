@@ -18,9 +18,7 @@ public class Cactus extends Landscape {
 	@Override
 	public boolean onEnter(Actor actor, Direction dir){
 		super.onEnter(actor, dir);
-		if(actor.isPlayer()){
-			actor.setHealth(-5);
-		}
+		actor.setHealth(-5);
 		return false;
 	}
 	

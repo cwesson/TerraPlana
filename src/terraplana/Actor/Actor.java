@@ -218,7 +218,7 @@ public abstract class Actor implements Attributes, Sprite{
 	
 	abstract protected Direction tick(int time);
 	
-	protected boolean onStopped(){
+	protected boolean onStopped(int count){
 		return false;
 	}
 
@@ -262,20 +262,21 @@ public abstract class Actor implements Attributes, Sprite{
 		public void run(){
 			if(act.inputAllowed() && act.getStatus() == Actor.Status.STATUS_OK){
 				boolean moved = false;
-				int tries = 4;
-				while(!moved && tries > 0) {
+				final int tries = 4;
+				int count = 0;
+				while(!moved && count < tries) {
 					Direction dir = act.tick(time);
 					if(dir != Direction.NONE){
 						moved = act.getTile().getBoard().moveActor(act, dir);
 						if(!moved){
-							if(act.onStopped()){
-								--tries;
+							if(act.onStopped(count)){
+								++count;
 							}else{
-								tries = 0;
+								break;
 							}
 						}
 					}else{
-						tries = 0;
+						break;
 					}
 				}
 			}

@@ -31,7 +31,7 @@ public class Ant extends Creature{
 	}
 	
 	@Override
-	protected boolean onStopped(){
+	protected boolean onStopped(int count){
 		direction = direction.invert();
 		return true;
 	}

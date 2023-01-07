@@ -11,7 +11,7 @@ import terraplana.Position;
 import terraplana.Actor.Actor;
 
 public class Fish extends Creature{
-	private int count = 0;
+	private int fast = 0;
 	private int conflict = 0;
 	private int state = 0;
 	
@@ -56,9 +56,9 @@ public class Fish extends Creature{
 	protected Direction tick(int time){
 		Position newPos = getTile().getBoard().getPosition(this);
 		newPos.move(direction);
-		Debug.info("conflict="+conflict+"    count="+count);
-		if(count <= 4 || conflict > 0){
-			count++;
+		Debug.info("conflict="+conflict+"    fast="+fast);
+		if(fast <= 4 || conflict > 0){
+			fast++;
 			if(conflict > 0){
 				conflict--;
 			}else{
@@ -66,7 +66,7 @@ public class Fish extends Creature{
 			}
 		}else{
 			turn();
-			count = 0;
+			fast = 0;
 			conflict = 0;
 		}
 		state = 1-state;
@@ -74,9 +74,9 @@ public class Fish extends Creature{
 	}
 	
 	@Override
-	protected boolean onStopped(){
+	protected boolean onStopped(int count){
 		turn();
-		count = 0;
+		fast = 0;
 		conflict = 0;
 		return false;
 	}

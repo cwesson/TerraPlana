@@ -12,8 +12,6 @@ item FlipFlops 1 15
 item Balloon 10 14
 landscape Cactus 7 16
 landscape Gate 13 21 1
-landscape Teleport 9 18 2 18
-landscape Teleport 2 18 9 18
 landscape Switch 4 10 2 9
 landscape Button 9 19 2 21
 landscape Door 2 9
@@ -22,6 +20,8 @@ landscape Switch 5 17 4 18
 landscape Rail 2 18 south-east
 landscape Rail 3 18 west-east
 landscape Rail 4 18 north-west west-east
+landscape Teleport 9 18 2 18
+landscape Teleport 2 18 9 18
 movable IceCube 2 14
 movable IceCube 4 14
 movable Box 4 15

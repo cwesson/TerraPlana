@@ -1,7 +1,7 @@
 include terrain.map
 title Gold Rush
 desc There's gold in them hills.
-start 25 25
+start 26 25
 end 40 40
 landscape Gate 40 41 10
 landscape Rail 25 25 west-east north-south
@@ -24,6 +24,18 @@ landscape Rail 27 27 west-east south-east
 landscape Rail 28 27 north-west
 landscape RailButton 28 26 north-south 27 27
 landscape Rail 28 25 south-west north-south
+landscape Rail 27 28 north-south
+landscape Rail 27 29 north-south
+landscape Rail 27 30 north-south
+landscape Rail 27 31 north-south
+landscape Rail 27 32 north-south
+landscape Rail 27 33 north-south
+landscape Rail 27 34 north-south
+landscape Rail 27 35 north-south
+landscape Rail 27 36 north-south
+creature Snake 27 36 north
+landscape Spawner 27 36 27 36 0 Snake north
+landscape Cactus 27 37
 
 map
 .................................................

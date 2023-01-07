@@ -16,7 +16,6 @@ import terraplana.Position;
 import terraplana.Tile;
 import terraplana.Actor.Actor;
 import terraplana.Actor.Creature.Creature;
-import terraplana.Movable.Movable;
 
 public class Spawner extends Landscape {
 	private Board board;
@@ -25,7 +24,8 @@ public class Spawner extends Landscape {
 	private String type;
 	private String[] spawnArgs;
 	private Creature spawn = null;
-	private SpawnerTimer timer;
+	private Creature blocked = null;
+	private SpawnerTimer timer = null;
 	
 	public Spawner (Tile place, String[] args) {
 		super(place);
@@ -38,15 +38,19 @@ public class Spawner extends Landscape {
 		// Creature specific
 		System.arraycopy(args, 4, spawnArgs, 0, args.length-4);
 		
-		timer = new SpawnerTimer(this, interval);
+		if(interval > 0) {
+			timer = new SpawnerTimer(this, interval);
+		}
 	}
 	
 	@Override
-	public void activate(){
+	public synchronized void activate(){
 		try {
-			spawn = ContentLoader.getInstance().loadCreature(type, spawnArgs);
-			Debug.info("Creature " + type);
-			board.addCreature(spawn, outPos);
+			if(blocked == null) {
+				spawn = ContentLoader.getInstance().loadCreature(type, spawnArgs);
+				Debug.info("Creature " + type);
+				board.addCreature(spawn, outPos);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,41 +58,26 @@ public class Spawner extends Landscape {
 	}
 	
 	@Override
-	public boolean onEnter(Actor actor, Direction dir){
-		super.onEnter(actor, dir);
-		return true;
-	}
-	
-	@Override
-	public boolean onExit(Actor actor, Direction dir, Tile next){
-		return true;
-	}
-	
-	@Override
-	public boolean onExited(Actor actor, Direction dir, Tile next){
+	public synchronized boolean onEntered(Actor actor, Direction dir, Tile next){
 		if(actor == spawn){
+			blocked = spawn;
 			spawn = null;
+		}
+		return super.onEntered(actor, dir, next);
+	}
+	
+	@Override
+	public synchronized boolean onExited(Actor actor, Direction dir, Tile next){
+		if(actor == blocked){
+			blocked = null;
 		}
 		return true;
 	}
 	
-	@Override
-	public boolean onEnter(Movable move, Direction dir){
-		return super.onEnter(move, dir);
-	}
-	
-	@Override
-	public boolean onEntered(Movable move, Direction dir, Tile last){
-		return true;
-	}
-	
-	@Override
-	public Direction onExit(Movable move, Direction dir, Tile next){
-		return Direction.NONE;
-	}
-	
 	public void finalize(){
-		timer.cancel();
+		if(timer != null) {
+			timer.cancel();
+		}
 	}
 	
 	private class SpawnerTimer extends TimerTask{

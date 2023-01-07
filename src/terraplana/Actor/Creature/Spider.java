@@ -40,7 +40,7 @@ public class Spider extends Creature{
 	}
 	
 	@Override
-	protected boolean onStopped(){
+	protected boolean onStopped(int count){
 		direction = direction.turnLeft();
 		return true;
 	}
