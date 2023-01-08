@@ -45,15 +45,15 @@ public class Spawner extends Landscape {
 	
 	@Override
 	public synchronized void activate(){
-		try {
-			if(blocked == null) {
+		if(blocked == null) {
+			try {
 				spawn = ContentLoader.getInstance().loadCreature(type, spawnArgs);
 				Debug.info("Creature " + type);
 				board.addCreature(spawn, outPos);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	

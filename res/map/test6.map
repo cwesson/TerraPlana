@@ -20,6 +20,7 @@ movable Box 24 25
 
 landscape Rail 25 27 north-east
 landscape Rail 26 27 west-east
+landscape Countdown 26 27 27 36 8 1
 landscape Rail 27 27 west-east south-east
 landscape Rail 28 27 north-west
 landscape RailButton 28 26 north-south 27 27
